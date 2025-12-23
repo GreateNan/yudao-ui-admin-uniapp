@@ -11,8 +11,7 @@ onShow((options) => {
   // https://github.com/unibest-tech/unibest/issues/192
   if (options?.path) {
     navigateToInterceptor.invoke({ url: `/${options.path}`, query: options.query })
-  }
-  else {
+  } else {
     navigateToInterceptor.invoke({ url: '/' })
   }
 })
@@ -22,5 +21,19 @@ onHide(() => {
 </script>
 
 <style lang="scss">
+.el-checkbox-group {
+  max-width: 100%;
+}
+.el-radio__label,
+.el-checkbox__label {
+  text-wrap: wrap;
+  max-width: 100%;
+  word-wrap: break-word;
+  white-space: normal;
+}
 
+.el-radio,
+.el-checkbox {
+  height: auto !important;
+}
 </style>

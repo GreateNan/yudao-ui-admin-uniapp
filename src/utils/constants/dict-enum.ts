@@ -51,10 +51,17 @@ const BPM_DICT = {
   BPM_TASK_STATUS: 'bpm_task_status', // BPM 任务状态
 } as const
 
+
+/** ========== custom - 蒙能业务 ========== */
+const CUSTOM = {
+  YWLX: 'ywlx', // BPM 模型表单类型
+ 
+} as const
 /** 字典类型枚举 - 统一导出 */
 export const DICT_TYPE = {
   ...BPM_DICT,
   ...INFRA_DICT,
   ...SYSTEM_DICT,
   ...COMMON_DICT,
+  ...CUSTOM
 } as const

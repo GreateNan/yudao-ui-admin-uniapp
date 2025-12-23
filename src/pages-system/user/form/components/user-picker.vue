@@ -1,4 +1,5 @@
 <template>
+
   <wd-select-picker
     v-model="selectedId"
     :label="label"
@@ -22,7 +23,7 @@ const props = withDefaults(defineProps<{
   label?: string
   placeholder?: string
 }>(), {
-  type: 'checkbox',
+  type: 'radio',
   label: '',
   placeholder: '请选择',
 })
@@ -56,6 +57,7 @@ const columns = computed(() => {
 watch(
   () => props.modelValue,
   (val) => {
+  
     if (props.type === 'radio') {
       // 单选时，如果值为 undefined，使用空字符串避免警告
       selectedId.value = val !== undefined ? val : ''

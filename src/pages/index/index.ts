@@ -87,6 +87,21 @@ const menuGroupsData: MenuGroup[] = [
       },
     ],
   },
+    {
+    key: 'scfw',
+    name: '生产服务',
+    menus: [
+      {
+        key: 'scfwIndex',
+        name: '我的记录',
+        icon: 'list',
+        url: '/pages-custom/scfw/index',
+        iconColor: '#597ef7',
+        permission: 'bpm:process-instance:query',
+      },
+    
+    ],
+  },
   {
     key: 'infra',
     name: '基础设施',

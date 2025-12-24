@@ -16,14 +16,18 @@
       :option="option"
       @submit="onSubmit"
     ></form-create>
-    <wd-button
-      :loading="formLoading"
-      class="flex-1"
-      type="warning"
-      @click="onSubmit"
-    >
-      提交
-    </wd-button>
+  
+
+     <view class="safe-area-inset-bottom fixed bottom-0 left-0 right-0 bg-white p-24rpx">
+      <wd-button
+        type="primary"
+        block
+        :loading="formLoading"
+        @click="onSubmit"
+      >
+        提交操作卡
+      </wd-button>
+    </view>
   </view>
 </template>
 <script lang="ts" setup>

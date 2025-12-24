@@ -30,6 +30,10 @@ export function getRecordPage(params: PageParam) {
 export function getRecord(id: number) {
   return http.get<Record>(`/mngt/form-record/get?id=${id}`)
 }
+/** 删除操作记录 */
+export function deleRecord(id: number) {
+  return http.delete<Record>(`/mngt/form-record/delete?id=${id}`)
+}
 
 /** 创建记录 */
 export function createRecord( data) {
@@ -38,3 +42,10 @@ export function createRecord( data) {
 export function updateRecord(data) {
   return http.put<Record>('/mngt/form-record/update', data)
 }
+
+
+/** 获取服务对象列表 */
+export function getServiceObjectList(params: PageParam) {
+  return http.get<PageResult<Record>>('/mngt/service-object/simple-list', params)
+}
+

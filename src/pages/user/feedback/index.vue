@@ -24,7 +24,9 @@
           />
           <wd-cell title="反馈图片" title-width="180rpx" />
           <!-- TODO @芋艿：图片上传的接入 -->
+         
           <view class="px-24rpx pb-24rpx">
+            {{fileList}}
             <wd-upload
               v-model:file-list="fileList"
               :upload-method="customUpload"

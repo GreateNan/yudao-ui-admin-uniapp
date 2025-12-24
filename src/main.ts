@@ -1,7 +1,13 @@
 import ElementPlus from 'element-plus'
 import vant from 'vant'
 import { createSSRApp } from 'vue'
-import UserPicker from '@/pages-system/user/form/components/user-picker.vue'
+import UserPicker from '@/pages-custom/form/components/user-picker.vue'
+import DeptPicker from '@/pages-custom/form/components/dept-picker.vue'
+import imageUpload from '@/pages-custom/form/components/image-upload.vue'
+import imagesUpload from '@/pages-custom/form/components/images-upload.vue'
+import fileUpload from '@/pages-custom/form/components/file-upload.vue'
+import dictSelect from '@/pages-custom/form/components/dict-select.vue'
+
 
 import App from './App.vue'
 import { requestInterceptor } from './http/interceptor'
@@ -14,6 +20,11 @@ import 'vant/lib/index.css'
 import FcDesigner from '/fcDesignerPro/dist1/index.es.js'
 
 FcDesigner.component('UserSelect', UserPicker)
+FcDesigner.component('DeptSelect', DeptPicker)
+FcDesigner.component('UploadImg', imageUpload)
+FcDesigner.component('UploadFile', fileUpload)
+FcDesigner.component('UploadImgs', imagesUpload)
+FcDesigner.component('DictSelect', dictSelect)
 export function createApp() {
   const app = createSSRApp(App)
   app.use(store)

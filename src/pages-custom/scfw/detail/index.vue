@@ -19,17 +19,14 @@
         <wd-cell title="业务类型">
           <dict-tag :type="DICT_TYPE.YWLX" :value="formData?.businessType" />
         </wd-cell>
-        <wd-cell title="操作人名字" :value="formData?.createName || '-'" />
+        <wd-cell title="创建人名字" :value="formData?.createName || '-'" />
         <wd-cell title="记录名" :value="formData?.name || '-'" />
-        <!-- <wd-cell title="操作人 IP" :value="formData?.userIp || '-'" />
-        <wd-cell title="操作人 UA" :value="formData?.userAgent || '-'" />
-        <wd-cell title="操作模块" :value="formData?.type || '-'" />
+        <wd-cell title="操作卡" :value="formData?.formname || '-'" />
+        <wd-cell title="服务对象" :value="formData?.objectname || '-'" />
+        <wd-cell title="关联对象" :value="formData?.devicename || '-'" />
      
-        <wd-cell title="操作内容" :value="formData?.action || '-'" />
-        <wd-cell v-if="formData?.extra" title="操作拓展参数" :value="formData.extra" />
-        <wd-cell title="请求 URL" :value="getRequestUrl()" />
-        <wd-cell title="操作时间" :value="formatDateTime(formData?.createTime) || '-'" />
-        <wd-cell title="业务编号" :value="String(formData?.bizId ?? '-')" /> -->
+        <wd-cell title="所属部门" :value="formData?.organizationname || '-'" />
+        
       </wd-cell-group>
 
       <view class="fixed bottom-0 left-0 right-0 bg-white p-24rpx">

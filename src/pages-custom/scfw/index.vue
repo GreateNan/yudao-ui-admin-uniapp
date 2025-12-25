@@ -26,24 +26,29 @@
             <dict-tag :type="DICT_TYPE.USER_TYPE" :value="item.userType" />
           </view>
           <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
-            <text class="mr-8rpx text-[#999]">操作人：</text>
-            <text class="line-clamp-1">{{ item.userName }}</text>
+            <text class="mr-8rpx text-[#999]">创建人：</text>
+            <text class="line-clamp-1">{{ item.createName }}</text>
+          </view>
+       
+          <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
+            <text class="mr-8rpx text-[#999]">创建时间：</text>
+            <text class="line-clamp-1">{{ formatDateTime(item.createTime[0]) || '-' }}</text>
           </view>
           <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
-            <text class="mr-8rpx shrink-0 text-[#999]">操作内容：</text>
-            <text class="min-w-0 flex-1 truncate">{{ item.action }}</text>
+            <text class="mr-8rpx text-[#999]">服务对象：</text>
+            <text class="line-clamp-1">{{ item.objectname }}</text>
+          </view>
+             <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
+            <text class="mr-8rpx shrink-0 text-[#999]">关联设备：</text>
+            <text class="min-w-0 flex-1 truncate">{{ item.devicename }}</text>
           </view>
           <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
-            <text class="mr-8rpx text-[#999]">操作时间：</text>
-            <text class="line-clamp-1">{{ formatDateTime(item.createTime) || '-' }}</text>
+            <text class="mr-8rpx text-[#999]">操作卡名称：</text>
+            <text class="line-clamp-1">{{ item.formname }}</text>
           </view>
-          <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
-            <text class="mr-8rpx text-[#999]">业务编号：</text>
-            <text class="line-clamp-1">{{ item.bizId }}</text>
-          </view>
-          <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
-            <text class="mr-8rpx text-[#999]">操作 IP：</text>
-            <text class="line-clamp-1">{{ item.userIp }}</text>
+             <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
+            <text class="mr-8rpx text-[#999]">所属部门：</text>
+            <text class="line-clamp-1">{{ item.organizationname }}</text>
           </view>
         </view>
       </view>
@@ -64,7 +69,7 @@
 <script lang="ts" setup>
 import type { Record } from '@/api/custom/record'
 import type { LoadMoreState } from '@/http/types'
-import { onReachBottom } from '@dcloudio/uni-app'
+import { onReachBottom,onShow } from '@dcloudio/uni-app'
 import { onMounted, ref } from 'vue'
 import { getRecordPage } from '@/api/custom/record'
 import { navigateBackPlus } from '@/utils'
@@ -145,11 +150,14 @@ function handleDetail(item: Record) {
 onReachBottom(() => {
   loadMore()
 })
-
-/** 初始化 */
-onMounted(() => {
-  getList()
+onShow(()=>{
+    list.value = []
+    getList()
 })
+/** 初始化 */
+// onMounted(() => {
+//   getList()
+// })
 </script>
 
 <style lang="scss" scoped>

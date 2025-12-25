@@ -6,8 +6,10 @@
     :columns="deptColumns"
     :column-change="handleColumnChange"
     :display-format="displayFormat"
+      @change="onColumnChange"
     @confirm="handleConfirm"
   />
+     
 </template>
 
 <script lang="ts" setup>
@@ -31,7 +33,16 @@ const emit = defineEmits<{
 const deptList = ref<Record[]>([])
 const deptColumns = ref<any[]>([])
 const selectedValue = ref<number[]>([])
-
+const onColumnChange = ({ picker, value, columnIndex }) => {
+  console.log('列变化:', columnIndex, value)
+  
+  // // 示例：选择到第二列时自动确认
+  // if (columnIndex === 1) { // 第二列索引为1
+  //   setTimeout(() => {
+  //     picker.confirm() // 通过picker实例确认
+  //   }, 500)
+  // }
+}
 /** 监听外部值变化，回显选中值 */
 watch(
   () => props.modelValue,
@@ -58,6 +69,13 @@ watch(
   { immediate: true },
 )
 
+
+
+// 确认前的回调（可选）
+const beforeConfirm = (value, resolve, picker) => {
+  console.log('选择的值：', value)
+  resolve(true) // 返回 true 确认选择
+}
 /** 初始化第一列 */
 function initFirstColumn() {
   const topDepts = deptList.value.filter(item => item.parentId === 0)

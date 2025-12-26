@@ -4,8 +4,13 @@ import { http } from '@/http/http'
 /** 操作记录信息 */
 export interface Record {
   id?: number
+  formId?: number
+  objectId?: number
+  deviceId?: number
   businessType?: string
+  name?: string
   traceId?: string
+
   userId?: number
   userType?: number
   userName?: string
@@ -36,8 +41,8 @@ export function deleRecord(id: number) {
 }
 
 /** 创建记录 */
-export function createRecord( data) {
-   return http.post<PageResult<Record>>('/mngt/form-record/create', data)
+export function createRecord(data) {
+  return http.post<PageResult<Record>>('/mngt/form-record/create', data)
 }/** 更新记录 */
 export function updateRecord(data) {
   return http.put<Record>('/mngt/form-record/update', data)
@@ -47,5 +52,10 @@ export function updateRecord(data) {
 /** 获取服务对象列表 */
 export function getServiceObjectList(params: PageParam) {
   return http.get<PageResult<Record>>('/mngt/service-object/simple-list', params)
+}
+
+/** 获取所有操作卡列表 */
+export function getmngtformall(params: PageParam) {
+  return http.get<PageResult<Record>>('/mngt/form/all', params)
 }
 

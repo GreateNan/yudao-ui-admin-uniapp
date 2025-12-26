@@ -62,6 +62,16 @@
         :state="loadMoreState"
         @reload="loadMore"
       />
+
+
+       <!-- 新增按钮 -->
+    <wd-fab
+      v-if="hasAccessByCodes(['mngt:form-record:create'])"
+      position="right-bottom"
+      type="primary"
+      :expandable="false"
+      @click="handleAdd"
+    />
     </view>
   </view>
 </template>
@@ -76,7 +86,8 @@ import { navigateBackPlus } from '@/utils'
 import { DICT_TYPE } from '@/utils/constants'
 import { formatDateTime } from '@/utils/date'
 import SearchForm from './modules/search-form.vue'
-
+import { useAccess } from '@/hooks/useAccess'
+const { hasAccessByCodes } = useAccess()
 definePage({
   style: {
     navigationBarTitleText: '',
@@ -84,7 +95,12 @@ definePage({
     
   },
 })
-
+/** 新增记录 */
+function handleAdd() {
+  uni.navigateTo({
+    url: '/pages-custom/scfw/form/index',
+  })
+}
 const total = ref(0)
 const list = ref<Record[]>([])
 const loadMoreState = ref<LoadMoreState>('loading') // 加载更多状态

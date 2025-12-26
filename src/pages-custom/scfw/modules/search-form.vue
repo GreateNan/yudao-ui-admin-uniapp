@@ -1,9 +1,12 @@
 <template>
   <!-- 搜索框入口 -->
+
   <wd-search
     :placeholder="placeholder"
     :hide-cancel="true"
     disabled
+    placeholderClass="custplaceholderClass"
+   
     @click="visible = true"
   />
 
@@ -19,26 +22,62 @@
       <view class="mb-24rpx text-32rpx text-[#333] font-semibold">
         搜索操作记录
       </view>
+
       <view class="mb-24rpx">
-        <view class="mb-12rpx text-28rpx text-[#666]"> 操作人 </view>
+        <view class="mb-12rpx text-28rpx text-[#666]"> 记录名称 </view>
+        <wd-input
+          v-model="formData.name"
+          placeholder="请输入记录名称"
+          clearable
+        />
+      </view>
+      <view class="mb-24rpx">
+        <view class="mb-12rpx text-28rpx text-[#666]"> 创建人 </view>
+        <wd-input
+          v-model="formData.createName"
+          placeholder="请输入创建人"
+          clearable
+        />
+      </view>
+      <view class="mb-24rpx">
+        <view class="mb-12rpx text-28rpx text-[#666]"> 操作卡 </view>
+        <formPicker
+          ref="formPickerRef"
+          v-model="formData.formId"
+          type="radio"
+          placeholder="请选择操作卡"
+        />
+      </view>
+      <!-- <view class="mb-24rpx">
+        <view class="mb-12rpx text-28rpx text-[#666]"> 创建人 </view>
         <UserPicker
           ref="userPickerRef"
           v-model="formData.userId"
           type="radio"
-          placeholder="请选择操作人员"
+          placeholder="请选择创建人人"
         />
-      </view>
+      </view> -->
 
       <view class="mb-24rpx">
         <view class="mb-12rpx text-28rpx text-[#666]"> 服务对象 </view>
-        <!-- ref="userPickerRef" -->
+
         <ObjectPicker
           v-model="formData.objectId"
-          type="radio"
           placeholder="请选择服务对象"
+       
         />
       </view>
+      <view class="mb-24rpx" v-if="formData.objectId">
+        <view class="mb-12rpx text-28rpx text-[#666]"> 关联设备 </view>
 
+        <ObjectPicker
+          :key="formData.objectId"
+          v-model="formData.deviceId"
+          :rootId="formData.objectId"
+          placeholder="请选择关联设备"
+        />
+      </view>
+      <!-- 
       <view class="mb-24rpx">
         <view class="mb-12rpx text-28rpx text-[#666]"> 操作模块 </view>
         <wd-input
@@ -46,24 +85,17 @@
           placeholder="请输入操作模块"
           clearable
         />
-      </view>
-      <view class="mb-24rpx">
-        <view class="mb-12rpx text-28rpx text-[#666]"> 操作名 </view>
-        <wd-input
-          v-model="formData.subType"
-          placeholder="请输入操作名"
-          clearable
-        />
-      </view>
-      <view class="mb-24rpx">
+      </view> -->
+
+      <!-- <view class="mb-24rpx">
         <view class="mb-12rpx text-28rpx text-[#666]"> 操作内容 </view>
         <wd-input
           v-model="formData.action"
           placeholder="请输入操作内容"
           clearable
         />
-      </view>
-      <view class="mb-24rpx">
+      </view> -->
+      <!-- <view class="mb-24rpx">
         <view class="mb-12rpx text-28rpx text-[#666]"> 操作时间 </view>
         <view class="flex items-center gap-16rpx">
           <view class="flex-1" @click="visibleCreateTime[0] = true">
@@ -124,15 +156,15 @@
             确定
           </wd-button>
         </view>
-      </view>
-      <view class="mb-32rpx">
+      </view> -->
+      <!-- <view class="mb-32rpx">
         <view class="mb-12rpx text-28rpx text-[#666]"> 业务编号 </view>
         <wd-input
           v-model="formData.bizId"
           placeholder="请输入业务编号"
           clearable
         />
-      </view>
+      </view> -->
       <view class="w-full flex justify-center gap-24rpx">
         <wd-button class="flex-1" plain @click="handleReset"> 重置 </wd-button>
         <wd-button class="flex-1" type="primary" @click="handleSearch">
@@ -144,10 +176,12 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, ref } from "vue";
+import { computed, reactive, ref, watch } from "vue";
 import UserPicker from "@/pages-system/user/form/components/user-picker.vue";
 import ObjectPicker from "@/pages-custom/form/components/object-picker.vue";
+import formPicker from "@/pages-custom/form/components/form-picker.vue";
 import { formatDate, formatDateRange } from "@/utils/date";
+import { update } from "XrFrame/kanata/lib/frontend";
 
 const emit = defineEmits<{
   search: [data: Record<string, any>];
@@ -156,10 +190,15 @@ const emit = defineEmits<{
 
 const visible = ref(false);
 const userPickerRef = ref<InstanceType<typeof UserPicker>>();
+const formPickerRef = ref<InstanceType<typeof ObjectPicker>>();
+
 const formData = reactive({
   userId: undefined as number | undefined,
+  formId: undefined as number | undefined,
   type: undefined as string | undefined,
-  subType: undefined as string | undefined,
+  name: undefined as string | undefined,
+
+  createName: undefined as string | undefined,
   action: undefined as string | undefined,
   createTime: [undefined, undefined] as [
     number | undefined,
@@ -167,8 +206,15 @@ const formData = reactive({
   ],
   bizId: undefined as number | undefined,
   objectId: undefined as number | undefined,
+  deviceId: undefined as number | undefined,
 });
-
+watch(
+  () => formData.objectId,
+  (val) => {
+    console.log(val);
+    formData.deviceId = undefined;
+  }
+);
 /** 搜索条件 placeholder 拼接 */
 const placeholder = computed(() => {
   const conditions: string[] = [];
@@ -176,11 +222,19 @@ const placeholder = computed(() => {
     const nickname = userPickerRef.value?.getUserNickname(formData.userId);
     conditions.push(`操作人:${nickname || formData.userId}`);
   }
+  if (formData.formId !== undefined) {
+    const nickname = formPickerRef.value?.getUserNickname(formData.formId);
+    conditions.push(`操作卡:${nickname || formData.formId}`);
+  }
+
+  if (formData.createName) {
+    conditions.push(`创建人:${formData.createName}`);
+  }
   if (formData.type) {
     conditions.push(`操作模块:${formData.type}`);
   }
-  if (formData.subType) {
-    conditions.push(`操作名:${formData.subType}`);
+  if (formData.name) {
+    conditions.push(`记录名称:${formData.name}`);
   }
   if (formData.action) {
     conditions.push(`操作内容:${formData.action}`);
@@ -195,7 +249,7 @@ const placeholder = computed(() => {
   if (formData.bizId !== undefined) {
     conditions.push(`业务编号:${formData.bizId}`);
   }
-  return conditions.length > 0 ? conditions.join(" | ") : "搜索操作日志";
+  return conditions.length > 0 ? conditions.join(" | ") : "搜索我的记录";
 });
 
 // 时间范围选择器状态
@@ -236,8 +290,12 @@ function handleSearch() {
 /** 重置 */
 function handleReset() {
   formData.userId = undefined;
+  formData.formId = undefined;
+  formData.createName = undefined;
+  formData.objectId = undefined;
+  formData.deviceId = undefined;
   formData.type = undefined;
-  formData.subType = undefined;
+  formData.name = undefined;
   formData.action = undefined;
   formData.createTime = [undefined, undefined];
   formData.bizId = undefined;
@@ -245,3 +303,12 @@ function handleReset() {
   emit("reset");
 }
 </script>
+
+<style scoped>
+
+.custplaceholderClass{
+overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+</style>

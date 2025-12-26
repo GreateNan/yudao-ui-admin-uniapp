@@ -78,7 +78,7 @@ const formData = ref<Record>();
 /** 编辑记录 */
 function handleEdit() {
   uni.navigateTo({
-    url: `/pages-system/user/form/index?id=${props.id}`,
+    url: `/pages-custom/scfw/form/index?id=${props.id}`,
   });
 }
 // 执行记录

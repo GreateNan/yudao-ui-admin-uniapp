@@ -29,11 +29,11 @@
           </view>
           <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
             <text class="mr-8rpx text-[#999]">业务类型：</text>
-            <text class="line-clamp-1">
+            <text class="">
               <dict-tag
                 :type="DICT_TYPE.YWLX"
                 :value="item?.business_type"
-                tagType="success"
+              
               />
             </text>
           </view>
@@ -124,7 +124,7 @@ const loadMoreState = ref<LoadMoreState>("loading"); // 加载更多状态
 const queryParams = ref({
   pageNo: 1,
   pageSize: 10,
-  businessType: "scfw",
+  businessType: undefined,
 });
 
 /** 返回上一页 */

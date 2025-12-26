@@ -6,6 +6,7 @@
     :columns="deptColumns"
     :column-change="handleColumnChange"
     :display-format="displayFormat"
+      @close="closeConfirm"
     @confirm="handleConfirm"
   />
 </template>
@@ -127,9 +128,10 @@ function buildColumnsForPath(path: number[]) {
   }
   deptColumns.value = columns
 }
-
+const tempValue = ref();
 /** 列变化 */
 function handleColumnChange({ selectedItem, resolve, finish }: any) {
+    tempValue.value = selectedItem;
   if (selectedItem.value === 0) {
     finish()
     return
@@ -146,7 +148,19 @@ function handleColumnChange({ selectedItem, resolve, finish }: any) {
 function displayFormat(selectedItems: any[]) {
   return selectedItems.map(item => item.label).join('/')
 }
+function closeConfirm() {
+  const { value } = tempValue.value;
+  
 
+ 
+  if (value) {
+    emit("update:modelValue", value);
+    
+  } else {
+    // 如果允许 root，默认顶级 0；否则 undefined
+    emit("update:modelValue", props.showRoot ? 0 : undefined);
+  }
+}
 /** 确认选择 */
 function handleConfirm({ value }: { value: number[] }) {
   if (value && value.length > 0) {

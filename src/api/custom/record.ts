@@ -59,3 +59,13 @@ export function getmngtformall(params: PageParam) {
   return http.get<PageResult<Record>>('/mngt/form/all', params)
 }
 
+
+/** 操作卡分页 */
+export function getmngtformpage(params: PageParam) {
+  return http.get<PageResult<Record>>('/mngt/form/page', params)
+}
+/** 操作卡详情 */
+export function getForm(id: number) {
+  return http.get<Record>(`/mngt/form/get?id=${id}`)
+}
+

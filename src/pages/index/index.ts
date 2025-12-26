@@ -87,7 +87,7 @@ const menuGroupsData: MenuGroup[] = [
       },
     ],
   },
-    {
+  {
     key: 'scfw',
     name: '生产服务',
     menus: [
@@ -99,7 +99,22 @@ const menuGroupsData: MenuGroup[] = [
         iconColor: '#597ef7',
         permission: 'bpm:process-instance:query',
       },
-    
+
+    ],
+  },
+  {
+    key: 'formList',
+    name: '操作卡管理',
+    menus: [
+      {
+        key: 'formListIndex',
+        name: '操作卡',
+        icon: 'list',
+        url: '/pages-custom/formList/index',
+        iconColor: '#597ef7',
+        permission: 'bpm:process-instance:query',
+      },
+
     ],
   },
   {

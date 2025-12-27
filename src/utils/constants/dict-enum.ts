@@ -55,7 +55,9 @@ const BPM_DICT = {
 /** ========== custom - 蒙能业务 ========== */
 const CUSTOM = {
   YWLX: 'ywlx', // BPM 模型表单类型
- 
+
+  MNGT_PROJECTPRIORITY:'projectpriority',
+ MNGT_PROJECTSTATUS:'project_status'
 } as const
 /** 字典类型枚举 - 统一导出 */
 export const DICT_TYPE = {

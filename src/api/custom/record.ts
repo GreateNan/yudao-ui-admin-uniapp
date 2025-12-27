@@ -69,3 +69,22 @@ export function getForm(id: number) {
   return http.get<Record>(`/mngt/form/get?id=${id}`)
 }
 
+
+// 项目列表
+export function getprojectpage(params: PageParam) {
+  return http.get<PageResult<Record>>('/mngt/project-info/page', params)
+}
+/** 操作卡详情 */
+export function getprojectget(id: number) {
+  return http.get<Record>(`/mngt/project-info/get?id=${id}`)
+}
+// 项目人员列表
+export function getprojectmemberpage(params: PageParam) {
+  return http.get<PageResult<Record>>('/mngt/project-member/page', params)
+}
+
+
+/** 获取项目专业*/
+export function getmajor(id: number) {
+  return http.get<Record>(`/mngt/project-info/getmajor?id=${id}`)
+}

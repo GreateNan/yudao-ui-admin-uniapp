@@ -2,7 +2,7 @@
   <view class="page-container">
     <!-- 顶部导航栏 -->
     <wd-navbar
-      title="操作卡"
+      title="项目"
       left-arrow
       placeholder
       safe-area-inset-top
@@ -19,7 +19,7 @@
         v-for="item in list"
         :key="item.id"
         class="mb-24rpx overflow-hidden rounded-12rpx bg-white shadow-sm"
-       
+        @click="handleDetail(item)"
       >
         <view class="p-24rpx">
           <view class="mb-16rpx flex items-center justify-between">
@@ -28,13 +28,9 @@
             </view>
           </view>
           <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
-            <text class="mr-8rpx text-[#999]">业务类型：</text>
-            <text class="">
-              <dict-tag
-                :type="DICT_TYPE.YWLX"
-                :value="item?.business_type"
-              
-              />
+            <text class="mr-8rpx text-[#999]">项目类型：</text>
+            <text class="line-clamp-1">
+            {{item.majorname}}
             </text>
           </view>
 
@@ -46,28 +42,15 @@
           </view>
 
           <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
-            <text class="mr-8rpx text-[#999]">所属部门：</text>
-            <text class="line-clamp-1">{{ item.organizationname }}</text>
+            <text class="mr-8rpx text-[#999]">人数：</text>
+            <text class="line-clamp-1">{{ item.projectmenber }}</text>
           </view>
+             
          <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
             <text class="mr-8rpx text-[#999]">创建人：</text>
             <text class="line-clamp-1">{{ item.creatorname }}</text>
           </view>
-          <view class="left-0 right-0 bg-white p-24rpx">
-            <view class="w-full flex gap-24rpx">
-              <wd-button class="flex-1" type="warning"  @click="handleDetail(item)">
-                查看操作卡
-              </wd-button>
-              <wd-button
-                class="flex-1"
-                type="info"
-              
-                @click="handleOffice(item)"
-              >
-                查看源文件
-              </wd-button>
-            </view>
-          </view>
+        
         </view>
       </view>
 
@@ -101,7 +84,7 @@ import type { Record } from "@/api/custom/record";
 import type { LoadMoreState } from "@/http/types";
 import { onReachBottom, onShow } from "@dcloudio/uni-app";
 import { onMounted, ref } from "vue";
-import { getmngtformpage } from "@/api/custom/record";
+import { getprojectmemberpage } from "@/api/custom/record";
 import { navigateBackPlus } from "@/utils";
 import { DICT_TYPE } from "@/utils/constants";
 import { formatDateTime } from "@/utils/date";
@@ -127,7 +110,8 @@ const loadMoreState = ref<LoadMoreState>("loading"); // 加载更多状态
 const queryParams = ref({
   pageNo: 1,
   pageSize: 10,
-  businessType: undefined,
+   majorId:119,
+ 
 });
 
 /** 返回上一页 */
@@ -139,7 +123,7 @@ function handleBack() {
 async function getList() {
   loadMoreState.value = "loading";
   try {
-    const data = await getmngtformpage(queryParams.value);
+    const data = await getprojectmemberpage(queryParams.value);
     list.value = [...list.value, ...data.list];
     total.value = data.total;
     loadMoreState.value =
@@ -156,6 +140,7 @@ function handleQuery(data?: Record<string, any>) {
   queryParams.value = {
     ...data,
     pageNo: 1,
+   
     pageSize: queryParams.value.pageSize,
   };
   list.value = [];
@@ -179,16 +164,10 @@ function loadMore() {
 /** 查看详情 */
 function handleDetail(item: Record) {
   uni.navigateTo({
-    url: `/pages-custom/formList/detail/index?id=${item.id}`,
+    url: `/pages-custom/jjts/project/detail/index?id=${item.id}`,
   });
 }
-/** 预览 */
-function handleOffice(item: Record) {
- window.open(`https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(
-    item.source_file_url
-  )}`)
- 
-}
+
 /** 触底加载更多 */
 onReachBottom(() => {
   loadMore();

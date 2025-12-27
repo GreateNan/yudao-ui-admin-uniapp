@@ -97,7 +97,7 @@ const menuGroupsData: MenuGroup[] = [
         icon: 'list',
         url: '/pages-custom/scfw/index',
         iconColor: '#597ef7',
-        permission: 'bpm:process-instance:query',
+        permission: 'mngt:form-record:query',
       },
 
     ],
@@ -112,7 +112,22 @@ const menuGroupsData: MenuGroup[] = [
         icon: 'list',
         url: '/pages-custom/formList/index',
         iconColor: '#597ef7',
-        permission: 'bpm:process-instance:query',
+        permission: 'mngt:form:query',
+      },
+
+    ],
+  },
+    {
+    key: 'jjts',
+    name: '基建调试',
+    menus: [
+      {
+        key: 'formListIndex',
+        name: '项目列表',
+        icon: 'flag',
+        url: '/pages-custom/jjts/project/index',
+        iconColor: '#597ef7',
+        permission: '',
       },
 
     ],

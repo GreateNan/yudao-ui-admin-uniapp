@@ -18,7 +18,7 @@
     ></form-create>
   
 
-     <view class="safe-area-inset-bottom fixed bottom-0 left-0 right-0 bg-white p-24rpx" style="z-index: 1000;">
+     <view class="safe-area-inset-bottom fixed bottom-0 left-0 right-0 bg-white p-24rpx" style="z-index: 10;">
       <wd-button
         type="primary"
         block

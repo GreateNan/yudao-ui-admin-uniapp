@@ -108,6 +108,7 @@
         ">
           <wd-tab title="调试日志"> </wd-tab>
         </block>
+        
         <block :key="4"  v-if="
           current == 0 &&
           (buttons.includes('hd-kq-list') ||

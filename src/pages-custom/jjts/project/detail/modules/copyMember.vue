@@ -1,11 +1,16 @@
 <template>
-  <view class="page-container" style="background: #fff;">
+  <view class="page-container" style="background: #fff">
     <!-- 操作日志列表 -->
     <view class="p-24rpx">
       <wd-table :data="list" border>
-        <wd-table-col prop="username" label="成员" ></wd-table-col>
-        <wd-table-col prop="postname" label="岗位" width="300"></wd-table-col>
-       
+        <wd-table-col prop="copyByname" label="抄送人"></wd-table-col>
+        <wd-table-col prop="createTime" label="创建时间" width="300" >
+          <template #value="{ row }">
+            <view class="custom-class">
+              {{      formatDateTime(row.createTime[0] ) || "-"}}
+            </view>
+          </template>
+        </wd-table-col>
       </wd-table>
 
       <!-- 加载更多 -->
@@ -29,7 +34,7 @@ import type { Record } from "@/api/custom/record";
 import type { LoadMoreState } from "@/http/types";
 import { onReachBottom, onShow } from "@dcloudio/uni-app";
 import { onMounted, ref } from "vue";
-import { getprojectmemberpage } from "@/api/custom/record";
+import { getcopymemberpage } from "@/api/custom/record";
 import { navigateBackPlus } from "@/utils";
 import { DICT_TYPE } from "@/utils/constants";
 import { formatDateTime } from "@/utils/date";
@@ -61,7 +66,7 @@ const queryParams = ref({
 async function getList() {
   loadMoreState.value = "loading";
   try {
-    const data = await getprojectmemberpage(queryParams.value);
+    const data = await getcopymemberpage(queryParams.value);
     list.value = [...list.value, ...data.list];
     total.value = data.total;
     loadMoreState.value =

@@ -152,7 +152,38 @@
         :projectId="formData.id"
         v-if="currenttab == 0"
       />
-      <file :key="currenttab" :majorId="majorId" :projectId="formData.id" :type="{1:0,2:1,3:2,5:3}[currenttab]" v-if="[1,2,3,5].includes(currenttab)"/>
+      <template v-if="current == 0">
+        <file
+          :key="currenttab"
+          :majorId="majorId"
+          :projectId="formData.id"
+          :type="{ 1: 0, 2: 1, 3: 2, 5: 3 }[currenttab]"
+          v-if="[1, 2, 3, 5].includes(currenttab)"
+        />
+      </template>
+
+      <copyMember
+        :key="majorId"
+        :majorId="majorId"
+        :projectId="formData.id"
+        v-if="currenttab == 4 && current == 0"
+      />
+      <log
+        :key="majorId"
+        :majorId="majorId"
+        :projectId="formData.id"
+        v-if="currenttab == 4 && current == 1"
+      />
+
+        <template v-if="current == 1">
+        <file
+          :key="currenttab"
+          :majorId="majorId"
+          :projectId="formData.id"
+          :type="{ 1: 0, 2: 1, 3: 2, 5: 3 }[currenttab]"
+          v-if="[1, 2].includes(currenttab)"
+        />
+      </template>
     </view>
   </view>
 </template>
@@ -167,7 +198,11 @@ import { DICT_TYPE } from "@/utils/constants";
 import { formatDateTime } from "@/utils/date";
 import { useAccess } from "@/hooks/useAccess";
 import member from "./modules/member.vue";
-import file from "./modules/file.vue";
+import file from "./modules/file/index.vue";
+import copyMember from "./modules/copyMember.vue";
+
+import log from "./modules/log.vue";
+
 const deleting = ref(false);
 const props = defineProps<{
   id?: number | any;
@@ -193,6 +228,7 @@ function changeTab(index) {
   } else {
     majorId.value = formData.value.majorId;
   }
+  currenttab.value = 0;
 }
 
 const formData = ref<Record>();

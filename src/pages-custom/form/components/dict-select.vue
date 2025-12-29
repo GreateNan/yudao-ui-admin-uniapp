@@ -65,8 +65,10 @@ watch(
 
 // 获得字典配置
 const getDictOptions = computed(() => {
+
   switch (props.valueType) {
     case 'str':
+     
       return getStrDictOptions(props.dictType)
     case 'int':
       return getIntDictOptions(props.dictType)

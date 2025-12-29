@@ -102,4 +102,27 @@ export function getdirectory(params: PageParam) {
   return http.get<PageResult<Record>>('/mngt/project-directory/page', params)
 }
 
+// 项目文件版本列表
+export function getfileVersion(params: PageParam) {
+  return http.get<PageResult<Record>>('/mngt/project-file-version/page', params)
+}
 
+
+
+// 项目人员列表
+export function getcopymemberpage(params: PageParam) {
+  return http.get<PageResult<Record>>('/mngt/project-copy-by/page', params)
+}
+
+
+// 操作日志列表
+export function logopage(params: PageParam) {
+  return http.get<PageResult<Record>>('/mngt/project-log/page', params)
+}
+
+
+/** 操作日志详情*/
+export function logoget(id: number) {
+  return http.get<Record>(`/mngt/project-log/get?id=${id}`)
+
+}

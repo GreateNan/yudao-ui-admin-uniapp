@@ -1,32 +1,18 @@
 <template>
   <view class="page-container" style="background: #fff">
-    <forderPicker
-      v-model="forderId"
-      :majorId="props.majorId"
-      :projectId="props.projectId"
-      :type="props.type"
-    />
     <!-- 操作日志列表 -->
     <view class="p-24rpx">
       <view
         v-for="item in list"
         :key="item.id"
         class="mb-24rpx overflow-hidden rounded-12rpx bg-white shadow-sm"
+        @click="showVersion(item)"
       >
         <view class="p-24rpx">
           <view class="mb-16rpx flex items-center justify-between">
             <view class="text-32rpx text-[#333] font-semibold">
-              {{ item.name }}
+              {{ item.project }}
             </view>
-          </view>
-          <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
-            <text class="mr-8rpx text-[#999]">文件类型：</text>
-            <text class="line-clamp-1">
-              <dict-tag
-                :type="DICT_TYPE.MNGT_FILE_TYEP"
-                :value="item.fileType"
-              />
-            </text>
           </view>
 
           <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
@@ -36,34 +22,37 @@
             }}</text>
           </view>
 
-          <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
-            <text class="mr-8rpx text-[#999]">创建人：</text>
-            <text class="line-clamp-1">{{ item.createName }}</text>
-          </view>
-
-          <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
-            <text class="mr-8rpx text-[#999]">描述：</text>
-            <text class="line-clamp-1">{{ item.remark }}</text>
-          </view>
-          <view class="left-0 right-0 bg-white p-24rpx">
+          <!-- <view class="left-0 right-0 bg-white p-24rpx">
             <view class="w-full flex gap-24rpx">
-              <wd-button class="flex-1" type="warning" @click="show = true">
-                历史版本
+              <wd-button class="flex-1" type="warning" @click="showVersion(item)">
+                查看详情
               </wd-button>
             </view>
-          </view>
+          </view> -->
         </view>
       </view>
       <wd-popup
         v-model="show"
-        position="left"
-        custom-style="width: 300px;padding-top:50px"
-        closable 
+        position="top"
+        custom-style="height: 300px;padding-top:50px"
+        closable
         @close="show = false"
       >
+
       
-        大量的数据列表
+
+      <wd-cell-group border>
+        <wd-cell title="编号" :value="String(detail?.id ?? '-')" />
+       <wd-cell title="日志项目" :value="detail?.project || '-'" />
+        <wd-cell title="日志时间">
+             {{      formatDateTime(detail.createTime[0] ) || "-"}}
+        </wd-cell>
+        <wd-cell title="日志内容" :value="detail?.log || '-'" />
+        <wd-cell title="备注" :value="detail?.remark || '-'" />
       
+      
+        
+      </wd-cell-group>
       </wd-popup>
       <!-- 加载更多 -->
       <view
@@ -86,11 +75,11 @@ import type { Record } from "@/api/custom/record";
 import type { LoadMoreState } from "@/http/types";
 import { onReachBottom, onShow } from "@dcloudio/uni-app";
 import { onMounted, ref, watch } from "vue";
-import { getprojectfilepage } from "@/api/custom/record";
+import { logopage, logoget } from "@/api/custom/record";
 import { navigateBackPlus } from "@/utils";
 import { DICT_TYPE } from "@/utils/constants";
 import { formatDateTime } from "@/utils/date";
-import forderPicker from "@/pages-custom/form/components/forder-picker.vue";
+
 import { useAccess } from "@/hooks/useAccess";
 const { hasAccessByCodes } = useAccess();
 
@@ -109,6 +98,12 @@ const props = withDefaults(
     type: undefined,
   }
 );
+const fileId = ref();
+function showVersion(item) {
+  show.value = true;
+  fileId.value = item.id;
+  getDetail()
+}
 const queryParams = ref({
   pageNo: 1,
   pageSize: 10,
@@ -125,12 +120,33 @@ watch(
     getList();
   }
 );
+/** 搜索按钮操作 */
+function handleQuery(data?: Record<string, any>) {
+  queryParams.value = {
+    ...data,
+    pageNo: 1,
 
+    pageSize: queryParams.value.pageSize,
+  };
+  list.value = [];
+  getList();
+}
+
+/** 重置按钮操作 */
+function handleReset() {
+  handleQuery();
+}
+const detail=ref()
+async function getDetail() {
+    console.log(fileId.value)
+  const data = await logoget(fileId.value);
+  detail.value=data
+}
 /** 查询操作日志列表 */
 async function getList() {
   loadMoreState.value = "loading";
   try {
-    const data = await getprojectfilepage({
+    const data = await logopage({
       ...queryParams.value,
       projectdirectoryId: forderId.value,
     });

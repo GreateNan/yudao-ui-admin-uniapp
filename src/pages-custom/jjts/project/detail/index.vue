@@ -272,7 +272,7 @@ function handleDelete() {
 
 /** 返回上一页 */
 function handleBack() {
-  navigateBackPlus("/pages-custom/scfw/index");
+  navigateBackPlus("/pages-custom/jjts/project/index");
 }
 
 /** 获取请求 URL */

@@ -74,66 +74,85 @@
         <block :key="0">
           <wd-tab title="人员管理"> </wd-tab>
         </block>
-        <block :key="1"   v-if="
-          buttons.includes('hd-base-list') ||
-          roles.includes(3) ||
-          roles.includes(2)
-        ">
+        <block
+          :key="1"
+          v-if="
+            buttons.includes('hd-base-list') ||
+            roles.includes(3) ||
+            roles.includes(2)
+          "
+        >
           <wd-tab title="基础文件"> </wd-tab>
         </block>
-        <block :key="2"  v-if="
-          current == 0 &&
-          (buttons.includes('hd-zz-list') ||
-            roles.includes(3) ||
-            roles.includes(2))
-        ">
+        <block
+          :key="2"
+          v-if="
+            current == 0 &&
+            (buttons.includes('hd-zz-list') ||
+              roles.includes(3) ||
+              roles.includes(2))
+          "
+        >
           <wd-tab title="安全管理"> </wd-tab>
         </block>
 
-        <block :key="2" v-if="
-          buttons.includes('hd-aq-list') ||
-          roles.includes(3) ||
-          roles.includes(2)
-        ">
+        <block
+          :key="2"
+          v-if="
+            buttons.includes('hd-aq-list') ||
+            roles.includes(3) ||
+            roles.includes(2)
+          "
+        >
           <wd-tab title="资质管理"> </wd-tab>
         </block>
         <block :key="3" v-if="current == 0">
           <wd-tab title="抄送人员"> </wd-tab>
         </block>
-            <block :key="5"  v-if="
-          current == 1 &&
-          (buttons.includes('hd-log-list') ||
-            roles.includes(3) ||
-            roles.includes(2))
-        ">
+        <block
+          :key="5"
+          v-if="
+            current == 1 &&
+            (buttons.includes('hd-log-list') ||
+              roles.includes(3) ||
+              roles.includes(2))
+          "
+        >
           <wd-tab title="调试日志"> </wd-tab>
         </block>
-        
-        <block :key="4"  v-if="
-          current == 0 &&
-          (buttons.includes('hd-kq-list') ||
-            roles.includes(3) ||
-            roles.includes(2))
-        ">
+
+        <block
+          :key="4"
+          v-if="
+            current == 0 &&
+            (buttons.includes('hd-kq-list') ||
+              roles.includes(3) ||
+              roles.includes(2))
+          "
+        >
           <wd-tab title="考勤管理"> </wd-tab>
         </block>
-    
-        <block :key="6"  v-if="
-          current == 1 &&
-          (buttons.includes('hd-jl-list') ||
-            roles.includes(3) ||
-            roles.includes(2))
-        ">
+
+        <block
+          :key="6"
+          v-if="
+            current == 1 &&
+            (buttons.includes('hd-jl-list') ||
+              roles.includes(3) ||
+              roles.includes(2))
+          "
+        >
           <wd-tab title="操作卡"> </wd-tab>
         </block>
       </wd-tabs>
-      
+
       <member
         :key="majorId"
         :majorId="majorId"
         :projectId="formData.id"
         v-if="currenttab == 0"
       />
+      <file :key="currenttab" :majorId="majorId" :projectId="formData.id" :type="{1:0,2:1,3:2,5:3}[currenttab]" v-if="[1,2,3,5].includes(currenttab)"/>
     </view>
   </view>
 </template>
@@ -148,6 +167,7 @@ import { DICT_TYPE } from "@/utils/constants";
 import { formatDateTime } from "@/utils/date";
 import { useAccess } from "@/hooks/useAccess";
 import member from "./modules/member.vue";
+import file from "./modules/file.vue";
 const deleting = ref(false);
 const props = defineProps<{
   id?: number | any;

@@ -87,4 +87,19 @@ export function getprojectmemberpage(params: PageParam) {
 /** 获取项目专业*/
 export function getmajor(id: number) {
   return http.get<Record>(`/mngt/project-info/getmajor?id=${id}`)
+
 }
+
+
+// 项目文件列表
+export function getprojectfilepage(params: PageParam) {
+  return http.get<PageResult<Record>>('/mngt/project-file/page', params)
+}
+
+
+// 项目文件夹列表
+export function getdirectory(params: PageParam) {
+  return http.get<PageResult<Record>>('/mngt/project-directory/page', params)
+}
+
+

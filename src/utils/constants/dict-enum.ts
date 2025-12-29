@@ -57,7 +57,9 @@ const CUSTOM = {
   YWLX: 'ywlx', // BPM 模型表单类型
 
   MNGT_PROJECTPRIORITY:'projectpriority',
- MNGT_PROJECTSTATUS:'project_status'
+ MNGT_PROJECTSTATUS:'project_status',
+  MNGT_FILE_TYEP:'file_type',
+ 
 } as const
 /** 字典类型枚举 - 统一导出 */
 export const DICT_TYPE = {

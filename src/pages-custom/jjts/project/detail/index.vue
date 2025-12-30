@@ -172,10 +172,17 @@
         :key="majorId"
         :majorId="majorId"
         :projectId="formData.id"
-        v-if="currenttab == 4 && current == 1"
+        v-if="currenttab == 3 && current == 1"
       />
-
-        <template v-if="current == 1">
+      <record
+        :key="majorId"
+        :majorId="majorId"
+        :projectId="formData.id"
+        :objectId="formData.objectId"
+        :buttons="buttons"
+        v-if="currenttab == 4 && current == 1"
+      ></record>
+      <template v-if="current == 1">
         <file
           :key="currenttab"
           :majorId="majorId"
@@ -202,7 +209,7 @@ import file from "./modules/file/index.vue";
 import copyMember from "./modules/copyMember.vue";
 
 import log from "./modules/log.vue";
-
+import record from "./record/index.vue";
 const deleting = ref(false);
 const props = defineProps<{
   id?: number | any;

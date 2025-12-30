@@ -18,7 +18,7 @@
     ></form-create>
   
 
-     <view class="safe-area-inset-bottom fixed bottom-0 left-0 right-0 bg-white p-24rpx" style="z-index: 10;">
+     <view class="safe-area-inset-bottom fixed bottom-0 left-0 right-0 bg-white p-24rpx" style="z-index: 10;" v-if="!view">
       <wd-button
         type="primary"
         block
@@ -26,6 +26,17 @@
         @click="onSubmit"
       >
         提交操作卡
+      </wd-button>
+    </view>
+
+     <view class="safe-area-inset-bottom fixed bottom-0 left-0 right-0 bg-white p-24rpx" style="z-index: 1000;" v-else>
+      <wd-button
+      
+        block
+       
+        @click="handleBack"
+      >
+        返回上一页
       </wd-button>
     </view>
   </view>
@@ -38,6 +49,7 @@ import { useToast } from "wot-design-uni";
 const toast = useToast();
 const props = defineProps<{
   id?: number | any;
+  view?: string | any;
 }>();
 definePage({
   style: {

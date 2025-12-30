@@ -1,15 +1,5 @@
 <template>
   <view class="page-container">
-    <!-- 顶部导航栏 -->
-    <wd-navbar
-      title="项目"
-      left-arrow
-      placeholder
-      safe-area-inset-top
-      fixed
-      @click-left="handleBack"
-    />
-
     <!-- 搜索组件 -->
     <SearchForm @search="handleQuery" @reset="handleReset" />
 
@@ -26,12 +16,11 @@
             <view class="text-32rpx text-[#333] font-semibold">
               {{ item.name }}
             </view>
+            <dict-tag :type="DICT_TYPE.USER_TYPE" :value="item.userType" />
           </view>
           <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
-            <text class="mr-8rpx text-[#999]">项目类型：</text>
-            <text class="line-clamp-1">
-              {{ item.majorname }}
-            </text>
+            <text class="mr-8rpx text-[#999]">创建人：</text>
+            <text class="line-clamp-1">{{ item.createName }}</text>
           </view>
 
           <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
@@ -40,15 +29,21 @@
               formatDateTime(item.createTime[0]) || "-"
             }}</text>
           </view>
-
           <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
-            <text class="mr-8rpx text-[#999]">人数：</text>
-            <text class="line-clamp-1">{{ item.projectmenber }}</text>
+            <text class="mr-8rpx text-[#999]">服务对象：</text>
+            <text class="line-clamp-1">{{ item.objectname }}</text>
           </view>
-
           <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
-            <text class="mr-8rpx text-[#999]">创建人：</text>
-            <text class="line-clamp-1">{{ item.creatorname }}</text>
+            <text class="mr-8rpx shrink-0 text-[#999]">关联设备：</text>
+            <text class="min-w-0 flex-1 truncate">{{ item.devicename }}</text>
+          </view>
+          <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
+            <text class="mr-8rpx text-[#999]">操作卡名称：</text>
+            <text class="line-clamp-1">{{ item.formname }}</text>
+          </view>
+          <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
+            <text class="mr-8rpx text-[#999]">所属部门：</text>
+            <text class="line-clamp-1">{{ item.organizationname }}</text>
           </view>
         </view>
       </view>
@@ -65,6 +60,15 @@
         :state="loadMoreState"
         @reload="loadMore"
       />
+
+      <!-- 新增按钮 -->
+      <wd-fab
+        v-if="buttons.includes('hd-jl-add')"
+        position="right-bottom"
+        type="primary"
+        :expandable="false"
+        @click="handleAdd"
+      />
     </view>
   </view>
 </template>
@@ -74,7 +78,7 @@ import type { Record } from "@/api/custom/record";
 import type { LoadMoreState } from "@/http/types";
 import { onReachBottom, onShow } from "@dcloudio/uni-app";
 import { onMounted, ref } from "vue";
-import { getprojectpage } from "@/api/custom/record";
+import { getRecordPage } from "@/api/custom/record";
 import { navigateBackPlus } from "@/utils";
 import { DICT_TYPE } from "@/utils/constants";
 import { formatDateTime } from "@/utils/date";
@@ -89,18 +93,36 @@ definePage({
 });
 /** 新增记录 */
 function handleAdd() {
+
   uni.navigateTo({
-    url: "/pages-custom/scfw/form/index",
+    url: "./record/form/index?majorId="+ props.majorId+'&projectId='+props.projectId+'&objectId='+props.objectId,
   });
 }
 const total = ref(0);
 const list = ref<Record[]>([]);
 const loadMoreState = ref<LoadMoreState>("loading"); // 加载更多状态
-
+const props = withDefaults(
+  defineProps<{
+    majorId?: number;
+    projectId?: number;
+    type?: number;
+    objectId?: number;
+    buttons?: [];
+  }>(),
+  {
+    majorId: undefined,
+    projectId: undefined,
+    type: undefined,
+    objectId: undefined,
+    buttons:undefined
+  }
+);
 const queryParams = ref({
   pageNo: 1,
   pageSize: 10,
-  majorId: 119,
+  businessType: "jjts",
+  majorId: props.majorId,
+  projectId: props.projectId,
 });
 
 /** 返回上一页 */
@@ -112,7 +134,7 @@ function handleBack() {
 async function getList() {
   loadMoreState.value = "loading";
   try {
-    const data = await getprojectpage(queryParams.value);
+    const data = await getRecordPage(queryParams.value);
     list.value = [...list.value, ...data.list];
     total.value = data.total;
     loadMoreState.value =
@@ -129,7 +151,6 @@ function handleQuery(data?: Record<string, any>) {
   queryParams.value = {
     ...data,
     pageNo: 1,
-
     pageSize: queryParams.value.pageSize,
   };
   list.value = [];
@@ -153,7 +174,7 @@ function loadMore() {
 /** 查看详情 */
 function handleDetail(item: Record) {
   uni.navigateTo({
-    url: `/pages-custom/jjts/project/detail/index?id=${item.id}`,
+    url: `./record/detail/index?id=${item.id}&update=${props.buttons.includes('hd-jl-edit')}&remove=${props.buttons.includes('hd-jl-remove')}`,
   });
 }
 

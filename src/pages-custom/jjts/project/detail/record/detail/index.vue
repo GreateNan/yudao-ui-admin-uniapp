@@ -23,19 +23,23 @@
         <wd-cell title="记录名" :value="formData?.name || '-'" />
         <wd-cell title="操作卡" :value="formData?.formname || '-'" />
         <wd-cell title="服务对象" :value="formData?.objectname || '-'" />
-        <wd-cell title="关联设备" :value="formData?.devicename || '-'" />
+        <!-- <wd-cell title="关联设备" :value="formData?.devicename || '-'" />
      
-        <wd-cell title="所属部门" :value="formData?.organizationname || '-'" />
-        
+        <wd-cell title="所属部门" :value="formData?.organizationname || '-'" /> -->
       </wd-cell-group>
 
       <view class="fixed bottom-0 left-0 right-0 bg-white p-24rpx">
-        <view class="w-full flex gap-24rpx"   v-if="hasAccessByCodes(['mngt:form-record:update'])">
-          <wd-button class="flex-1" type="warning" @click="handleEdit">
+        <view class="w-full flex gap-24rpx">
+          <wd-button
+            class="flex-1"
+            type="warning"
+            @click="handleEdit"
+            v-if="update == 'true'"
+          >
             编辑
           </wd-button>
           <wd-button
-            v-if="hasAccessByCodes(['mngt:form-record:delete'])"
+            v-if="remove == 'true'"
             class="flex-1"
             type="info"
             :loading="deleting"
@@ -43,10 +47,15 @@
           >
             删除
           </wd-button>
-          <wd-button class="flex-1" type="error" @click="execute"   v-if="hasAccessByCodes(['mngt:form-record:update'])">
+          <wd-button
+            class="flex-1"
+            type="error"
+            @click="execute"
+            v-if="update == 'true'"
+          >
             执行操作卡
           </wd-button>
-           <wd-button class="flex-1" type="error" @click="execute('view')" >
+          <wd-button class="flex-1" type="error" @click="execute('view')">
             查看操作卡
           </wd-button>
         </view>
@@ -59,16 +68,18 @@
 import type { Record } from "@/api/custom/record";
 import { onMounted, ref } from "vue";
 import { useToast } from "wot-design-uni";
-import { getRecord,deleRecord } from "@/api/custom/record";
+import { getRecord, deleRecord } from "@/api/custom/record";
 import { navigateBackPlus } from "@/utils";
 import { DICT_TYPE } from "@/utils/constants";
 import { formatDateTime } from "@/utils/date";
-import { useAccess } from '@/hooks/useAccess'
+import { useAccess } from "@/hooks/useAccess";
 const deleting = ref(false);
 const props = defineProps<{
   id?: number | any;
+  update?: boolean | any;
+  remove?: boolean | any;
 }>();
-const { hasAccessByCodes } = useAccess()
+const { hasAccessByCodes } = useAccess();
 definePage({
   style: {
     navigationBarTitleText: "",
@@ -81,12 +92,12 @@ const formData = ref<Record>();
 /** 编辑记录 */
 function handleEdit() {
   uni.navigateTo({
-    url: `/pages-custom/scfw/form/index?id=${props.id}`,
+    url: `../form/index?id=${props.id}`,
   });
 }
 // 执行记录
 function execute(view) {
-  console.log(view)
+  console.log(view=='view')
 
   if (view=='view') {
     uni.navigateTo({
@@ -126,7 +137,7 @@ function handleDelete() {
 
 /** 返回上一页 */
 function handleBack() {
-  navigateBackPlus("/pages-custom/scfw/index");
+  navigateBackPlus("");
 }
 
 /** 获取请求 URL */
@@ -158,7 +169,7 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-  .wd-button.is-medium{
+    .wd-button.is-medium{
     min-width: 154rpx;
   }
 </style>

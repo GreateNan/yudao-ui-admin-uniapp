@@ -42,10 +42,10 @@
       
 
       <wd-cell-group border>
-        <wd-cell title="编号" :value="String(detail?.id ?? '-')" />
+        <!-- <wd-cell title="编号" :value="String(detail?.id ?? '-')" /> -->
        <wd-cell title="日志项目" :value="detail?.project || '-'" />
         <wd-cell title="日志时间">
-             {{      formatDateTime(detail.createTime[0] ) || "-"}}
+             {{      formatDateTime(detail.createTime ) || "-"}}
         </wd-cell>
         <wd-cell title="日志内容" :value="detail?.log || '-'" />
         <wd-cell title="备注" :value="detail?.remark || '-'" />

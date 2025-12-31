@@ -5,6 +5,7 @@
       :majorId="props.majorId"
       :projectId="props.projectId"
       :type="props.type"
+      :key="props.majorId"
     />
 
        <!-- 搜索组件 -->
@@ -135,6 +136,8 @@ watch(
     getList();
   }
 );
+
+
 /** 搜索按钮操作 */
 function handleQuery(data?: Record<string, any>) {
   queryParams.value = {
@@ -186,6 +189,7 @@ onReachBottom(() => {
 
 /** 初始化 */
 onMounted(() => {
+  forderId.value=undefined
   getList();
 });
 </script>

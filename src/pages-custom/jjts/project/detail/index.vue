@@ -12,32 +12,42 @@
 
     <!-- 详情内容 -->
     <view>
-      <wd-cell-group border>
-        <wd-cell title="编号" :value="String(formData?.id ?? '-')" />
-        <!-- <wd-cell v-if="formData?.traceId" title="链路追踪" :value="formData.traceId" />
+      <wd-collapse v-model="wdvalue">
+        <wd-collapse-item title="项目详情" name="item1"
+          >
+             <wd-cell-group border>
+          <!-- <wd-cell title="编号" :value="String(formData?.id ?? '-')" /> -->
+          <!-- <wd-cell v-if="formData?.traceId" title="链路追踪" :value="formData.traceId" />
         <wd-cell title="操作人编号" :value="String(formData?.userId ?? '-')" /> -->
-        <wd-cell title="项目优先级">
-          <dict-tag
-            :type="DICT_TYPE.MNGT_PROJECTPRIORITY"
-            :value="formData?.projectPriority"
+          <wd-cell title="项目优先级">
+            <dict-tag
+              :type="DICT_TYPE.MNGT_PROJECTPRIORITY"
+              :value="formData?.projectPriority"
+            />
+          </wd-cell>
+          <wd-cell title="项目状态">
+            <dict-tag
+              :type="DICT_TYPE.MNGT_PROJECTSTATUS"
+              :value="formData?.projectType"
+            />
+          </wd-cell>
+          <wd-cell
+            title="开始日期"
+            :value="formatDateTime(formData.startTime)"
           />
-        </wd-cell>
-        <wd-cell title="项目状态">
-          <dict-tag
-            :type="DICT_TYPE.MNGT_PROJECTSTATUS"
-            :value="formData?.projectType"
-          />
-        </wd-cell>
-        <wd-cell title="开始日期" :value="formatDateTime(formData.startTime)" />
-        <wd-cell title="结束日期" :value="formatDateTime(formData.endTime)" />
-        <wd-cell title="记录名" :value="formData?.name || '-'" />
+          <wd-cell title="结束日期" :value="formatDateTime(formData.endTime)" />
+          <wd-cell title="项目名" :value="formData?.name || '-'" />
 
-        <wd-cell title="服务对象" :value="formData?.bojectname || '-'" />
+          <wd-cell title="服务对象" :value="formData?.bojectname || '-'" />
 
-        <wd-cell title="项目类型" :value="formData?.majorname || '-'" />
-        <wd-cell title="项目描述" :value="formData?.projectDesc || '-'" />
-      </wd-cell-group>
-
+          <wd-cell title="项目类型" :value="formData?.majorname || '-'" />
+          <wd-cell title="项目描述" :value="formData?.projectDesc || '-'" />
+        </wd-cell-group>
+          
+          </wd-collapse-item
+        >
+     
+      </wd-collapse>
       <view
         class="tabsList"
         v-if="
@@ -68,6 +78,7 @@
         placeholder="请选择专业"
         value-key="majorId"
         label-key="majorName"
+        @confirm="confirm"
       />
 
       <wd-tabs v-model="currenttab">
@@ -221,7 +232,7 @@ definePage({
     navigationStyle: "custom",
   },
 });
-
+const wdvalue = ref<string[]>([])
 const toast = useToast();
 
 const current = ref(0); //0 项目 1各专业
@@ -306,8 +317,19 @@ async function getDetail() {
     buttons.value = formData.value.projectpost;
     roles.value = formData.value.projectrole;
     majorId.value = formData.value.majorId;
+
     let a = await getmajor(props.id);
     majorList.value = a.projectmajorlist;
+    if (
+      !buttons.value.includes("hd-xm-check") &&
+      !roles.value.includes(1) &&
+      !roles.value.includes(2) &&
+      !roles.value.includes(3)
+    ) {
+      current.value = 1;
+      console.log("aaa");
+      majorList.value.length && (majorId.value = majorList.value[0].majorId);
+    }
   } finally {
     toast.close();
   }

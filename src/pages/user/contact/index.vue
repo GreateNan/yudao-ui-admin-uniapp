@@ -66,8 +66,8 @@ definePage({
 
 const toast = useToast()
 
-const qrCodeUrl = ref('/static/images/qrcode.png') // 客服二维码图片地址
-const servicePhone = ref('18818818818') // 客服电话号码
+const qrCodeUrl = ref('/static/images/qrcode.jpg') // 客服二维码图片地址
+const servicePhone = ref('15694718991') // 客服电话号码
 
 /** 返回上一页 */
 function handleBack() {

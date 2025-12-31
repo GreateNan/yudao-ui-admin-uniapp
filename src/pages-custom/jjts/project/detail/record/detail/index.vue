@@ -13,7 +13,7 @@
     <!-- 详情内容 -->
     <view>
       <wd-cell-group border>
-        <wd-cell title="编号" :value="String(formData?.id ?? '-')" />
+        <!-- <wd-cell title="编号" :value="String(formData?.id ?? '-')" /> -->
         <!-- <wd-cell v-if="formData?.traceId" title="链路追踪" :value="formData.traceId" />
         <wd-cell title="操作人编号" :value="String(formData?.userId ?? '-')" /> -->
         <wd-cell title="业务类型">

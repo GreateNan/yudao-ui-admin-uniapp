@@ -21,36 +21,45 @@
         class="mb-24rpx overflow-hidden rounded-12rpx bg-white shadow-sm"
         @click="handleDetail(item)"
       >
-        <view class="p-24rpx">
-          <view class="mb-16rpx flex items-center justify-between">
-            <view class="text-32rpx text-[#333] font-semibold">
-              {{ item.name }}
+        <wd-card type="rectangle">
+          <template #title>
+            <view class="title">
+              <view>{{ formatDateTime(item.createTime[0]) || "-" }}</view>
+              <view class="title-tip">
+                <wd-icon
+                  name="warning"
+                  size="14px"
+                  custom-style="vertical-align: bottom"
+                />
+                {{ item.majorname }}
+              </view>
+            </view>
+          </template>
+          <view style="height: 40px" class="content">
+            <img
+              :src="item.imgUrl"
+              alt="joy"
+              style="border-radius: 4px; margin-right: 24rpx:width:100rpx;height:100rpx"
+            />
+            <view style="margin-left: 30rpx">
+              <view style="color: rgba(0, 0, 0, 0.85); font-size: 16px">{{
+                item.name
+              }}</view>
+              <view style="color: rgba(0, 0, 0, 0.25); font-size: 12px"
+                >创建人{{ item.creatorname }}</view
+              >
+                <view style="color: rgba(0, 0, 0, 0.25); font-size: 12px"
+                >人数{{ item.projectmenber  }}</view
+              >
             </view>
           </view>
-          <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
-            <text class="mr-8rpx text-[#999]">项目类型：</text>
-            <text class="line-clamp-1">
-              {{ item.majorname }}
-            </text>
-          </view>
 
-          <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
-            <text class="mr-8rpx text-[#999]">创建时间：</text>
-            <text class="line-clamp-1">{{
-              formatDateTime(item.createTime[0]) || "-"
-            }}</text>
-          </view>
-
-          <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
-            <text class="mr-8rpx text-[#999]">人数：</text>
-            <text class="line-clamp-1">{{ item.projectmenber }}</text>
-          </view>
-
-          <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
-            <text class="mr-8rpx text-[#999]">创建人：</text>
-            <text class="line-clamp-1">{{ item.creatorname }}</text>
-          </view>
-        </view>
+          <template #footer>
+            <view>
+              <wd-button size="small" plain>查看详情</wd-button>
+            </view>
+          </template>
+        </wd-card>
       </view>
 
       <!-- 加载更多 -->
@@ -172,4 +181,21 @@ onShow(() => {
 </script>
 
 <style lang="scss" scoped>
+.content,
+.title {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+.content {
+  justify-content: flex-start;
+}
+.title {
+  justify-content: space-between;
+}
+.title-tip {
+  color: rgba(0, 0, 0, 0.25);
+  font-size: 12px;
+}
 </style>

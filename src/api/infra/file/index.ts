@@ -3,6 +3,18 @@ import { http } from '@/http/http'
 import { useTokenStore } from '@/store/token'
 import { useUserStore } from '@/store/user'
 
+/** 文件信息 */
+export interface FileVO {
+  id?: number
+  configId?: number
+  path: string
+  name?: string
+  url?: string
+  size?: number
+  type?: string
+  createTime?: Date
+}
+
 /** 文件预签名信息 */
 export interface FilePresignedUrlRespVO {
   configId: number // 配置编号
@@ -21,23 +33,24 @@ export interface FileCreateReqVO {
   size?: number
 }
 
-/**
- * 获取文件预签名地址
- *
- * @param name 文件名
- * @param directory 目录（可选）
- */
+/** 获取文件预签名地址 */
 export function getFilePresignedUrl(name: string, directory?: string) {
   return http.get<FilePresignedUrlRespVO>('/infra/file/presigned-url', { name, directory })
 }
 
-/**
- * 创建文件记录
- *
- * @param data 文件信息
- */
+/** 创建文件记录 */
 export function createFile(data: FileCreateReqVO) {
   return http.post<string>('/infra/file/create', data)
+}
+
+/** 获取文件详情 */
+export function getFile(id: number) {
+  return http.get<FileVO>(`/infra/file/get?id=${id}`)
+}
+
+/** 删除文件 */
+export function deleteFile(id: number) {
+  return http.delete(`/infra/file/delete?id=${id}`)
 }
 
 /**

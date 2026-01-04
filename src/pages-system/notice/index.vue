@@ -1,5 +1,5 @@
 <template>
-  <view class="page-container">
+  <view class="yd-page-container">
     <!-- 顶部导航栏 -->
     <wd-navbar
       title="通知公告管理"
@@ -35,7 +35,7 @@
           </view>
           <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
             <text class="mr-8rpx text-[#999]">创建时间：</text>
-            <text class="line-clamp-1">{{ formatDateTime(item.createTime) || '-' }}</text>
+            <text class="line-clamp-1">{{ formatDateTime(item.createTime) }}</text>
           </view>
         </view>
       </view>

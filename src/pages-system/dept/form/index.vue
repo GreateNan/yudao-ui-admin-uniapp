@@ -1,5 +1,5 @@
 <template>
-  <view class="page-container">
+  <view class="yd-page-container">
     <!-- 顶部导航栏 -->
     <wd-navbar
       :title="getTitle"
@@ -62,7 +62,7 @@
     </view>
 
     <!-- 底部保存按钮 -->
-    <view class="safe-area-inset-bottom fixed bottom-0 left-0 right-0 bg-white p-24rpx">
+    <view class="yd-detail-footer">
       <wd-button
         type="primary"
         block
@@ -80,7 +80,7 @@ import type { Dept } from '@/api/system/dept'
 import { computed, onMounted, ref } from 'vue'
 import { useToast } from 'wot-design-uni'
 import { createDept, getDept, updateDept } from '@/api/system/dept'
-import UserPicker from '@/pages-system/user/form/components/user-picker.vue'
+import UserPicker from '@/components/system-select/user-picker.vue'
 import { navigateBackPlus } from '@/utils'
 import { CommonStatusEnum } from '@/utils/constants'
 import DeptPicker from './components/dept-picker.vue'

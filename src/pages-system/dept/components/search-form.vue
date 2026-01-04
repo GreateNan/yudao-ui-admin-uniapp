@@ -1,26 +1,14 @@
 <template>
   <!-- 搜索框入口 -->
-  <wd-search
-    :placeholder="placeholder"
-    :hide-cancel="true"
-    disabled
-    @click="visible = true"
-  />
+  <view @click="visible = true">
+    <wd-search :placeholder="placeholder" hide-cancel disabled />
+  </view>
 
   <!-- 搜索弹窗 -->
-  <wd-popup
-    v-model="visible"
-    position="top"
-    custom-style="border-radius: 0 0 24rpx 24rpx;"
-    safe-area-inset-top
-    @close="visible = false"
-  >
-    <view class="p-32rpx">
-      <view class="mb-24rpx text-32rpx text-[#333] font-semibold">
-        搜索部门
-      </view>
-      <view class="mb-24rpx">
-        <view class="mb-12rpx text-28rpx text-[#666]">
+  <wd-popup v-model="visible" position="top" @close="visible = false">
+    <view class="yd-search-form-container" :style="{ paddingTop: `${getNavbarHeight()}px` }">
+      <view class="yd-search-form-item">
+        <view class="yd-search-form-label">
           部门名称
         </view>
         <wd-input
@@ -29,8 +17,8 @@
           clearable
         />
       </view>
-      <view class="mb-32rpx">
-        <view class="mb-12rpx text-28rpx text-[#666]">
+      <view class="yd-search-form-item">
+        <view class="yd-search-form-label">
           状态
         </view>
         <wd-radio-group v-model="formData.status" shape="button">
@@ -46,7 +34,7 @@
           </wd-radio>
         </wd-radio-group>
       </view>
-      <view class="w-full flex justify-center gap-24rpx">
+      <view class="yd-search-form-actions">
         <wd-button class="flex-1" plain @click="handleReset">
           重置
         </wd-button>
@@ -61,6 +49,7 @@
 <script lang="ts" setup>
 import { computed, reactive, ref } from 'vue'
 import { getDictLabel, getIntDictOptions } from '@/hooks/useDict'
+import { getNavbarHeight } from '@/utils'
 import { DICT_TYPE } from '@/utils/constants'
 
 const emit = defineEmits<{

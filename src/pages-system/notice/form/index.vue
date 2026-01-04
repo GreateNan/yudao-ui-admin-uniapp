@@ -1,5 +1,5 @@
 <template>
-  <view class="page-container">
+  <view class="yd-page-container">
     <!-- 顶部导航栏 -->
     <wd-navbar
       :title="getTitle"
@@ -54,7 +54,7 @@
     </view>
 
     <!-- 底部保存按钮 -->
-    <view class="fixed bottom-0 left-0 right-0 bg-white p-24rpx">
+    <view class="yd-detail-footer">
       <wd-button
         type="primary"
         block
@@ -74,7 +74,7 @@ import { useToast } from 'wot-design-uni'
 import { createNotice, getNotice, updateNotice } from '@/api/system/notice'
 import { getIntDictOptions } from '@/hooks/useDict'
 import { navigateBackPlus } from '@/utils'
-import { DICT_TYPE } from '@/utils/constants'
+import { CommonStatusEnum, DICT_TYPE } from '@/utils/constants'
 
 const props = defineProps<{
   id?: number | any
@@ -94,8 +94,8 @@ const formData = ref<Notice>({
   id: undefined,
   title: '',
   content: '',
-  type: 0,
-  status: 0,
+  type: undefined,
+  status: CommonStatusEnum.ENABLE,
 })
 const formRules = {
   title: [{ required: true, message: '公告标题不能为空' }],

@@ -9,6 +9,21 @@ export interface User {
   deptName?: string
 }
 
+/** 流程定义 */
+export interface ProcessDefinition {
+  id: string
+  key: string
+  name: string
+  description?: string
+  icon?: string
+  category: string
+  formType?: number
+  formId?: number
+  formCustomCreatePath?: string
+  formCustomViewPath?: string
+  suspensionState: number
+}
+
 /** 流程实例 */
 export interface ProcessInstance {
   id: string
@@ -20,10 +35,18 @@ export interface ProcessInstance {
   startTime?: number
   endTime?: number
   startUser?: User
+  businessKey?: string
+  processDefinition?: ProcessDefinition
   summary?: {
     key: string
     value: string
   }[]
+}
+
+/** 审批详情 */
+export interface ApprovalDetail {
+  processInstance: ProcessInstance
+  processDefinition: ProcessDefinition
 }
 
 /** 抄送流程实例 */
@@ -54,6 +77,11 @@ export function getProcessInstance(id: string) {
   return http.get<ProcessInstance>(`/bpm/process-instance/get?id=${id}`)
 }
 
+/** 获取审批详情 */
+export function getApprovalDetail(params: { processInstanceId: string, activityId?: string, taskId?: string }) {
+  return http.get<ApprovalDetail>('/bpm/process-instance/get-approval-detail', params)
+}
+
 /** 新增流程实例 */
 export function createProcessInstance(data: {
   processDefinitionId: string
@@ -65,4 +93,14 @@ export function createProcessInstance(data: {
 /** 申请人取消流程实例 */
 export function cancelProcessInstanceByStartUser(id: string, reason: string) {
   return http.delete<boolean>('/bpm/process-instance/cancel-by-start-user', { id, reason })
+}
+
+/** 查询管理员流程实例分页 */
+export function getProcessInstanceManagerPage(params: PageParam) {
+  return http.get<PageResult<ProcessInstance>>('/bpm/process-instance/manager-page', params)
+}
+
+/** 管理员取消流程实例 */
+export function cancelProcessInstanceByAdmin(id: string, reason: string) {
+  return http.delete<boolean>('/bpm/process-instance/cancel-by-admin', { id, reason })
 }

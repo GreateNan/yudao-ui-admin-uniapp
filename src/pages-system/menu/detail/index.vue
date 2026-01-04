@@ -1,5 +1,5 @@
 <template>
-  <view class="page-container">
+  <view class="yd-page-container">
     <!-- 顶部导航栏 -->
     <wd-navbar
       title="菜单详情"
@@ -15,7 +15,7 @@
           <dict-tag :type="DICT_TYPE.SYSTEM_MENU_TYPE" :value="formData?.type" />
         </wd-cell>
         <wd-cell title="上级菜单" :value="parentMenuName" />
-        <wd-cell title="显示排序" :value="String(formData?.sort ?? '-')" />
+        <wd-cell title="显示排序" :value="formData?.sort" />
         <wd-cell title="路由地址" :value="formData?.path || '-'" />
         <wd-cell v-if="formData?.type === SystemMenuTypeEnum.MENU" title="组件路径" :value="formData?.component || '-'" />
         <wd-cell v-if="formData?.type === SystemMenuTypeEnum.MENU" title="组件名称" :value="formData?.componentName || '-'" />
@@ -39,13 +39,13 @@
             不缓存
           </wd-tag>
         </wd-cell>
-        <wd-cell title="创建时间" :value="formatDateTime(formData?.createTime) || '-'" />
+        <wd-cell title="创建时间" :value="formatDateTime(formData?.createTime)" />
       </wd-cell-group>
     </view>
 
     <!-- 底部操作按钮 -->
-    <view class="fixed bottom-0 left-0 right-0 bg-white p-24rpx">
-      <view class="w-full flex gap-24rpx">
+    <view class="yd-detail-footer">
+      <view class="yd-detail-footer-actions">
         <wd-button class="flex-1" type="warning" @click="handleEdit">
           编辑
         </wd-button>

@@ -3,6 +3,7 @@ import type { CustomRequestOptions, IResponse } from '@/http/types'
 import { nextTick } from 'vue'
 import { useTokenStore } from '@/store/token'
 import { getLastPage, isDoubleTokenMode } from '@/utils'
+import { ApiEncrypt } from '@/utils/encrypt'
 import { toLoginPage } from '@/utils/toLoginPage'
 import { ResultEnum } from './tools/enum'
 
@@ -21,9 +22,21 @@ export function http<T>(options: CustomRequestOptions) {
       // #endif
       // 响应成功
       success: async (res) => {
-        const responseData = res.data as IResponse<T>
-        const { code } = responseData
+        let responseData = res.data as IResponse<T>
+        // add by panda：检查是否需要解密响应数据
+        const encryptHeader = ApiEncrypt.getEncryptHeader()
+        const isEncryptResponse = res.header[encryptHeader] === 'true' || res.header[encryptHeader.toLowerCase()] === 'true'
+        if (isEncryptResponse && typeof responseData === 'string') {
+          try {
+            // 解密响应数据
+            responseData = ApiEncrypt.decryptResponse(responseData)
+          } catch (error) {
+            console.error('响应数据解密失败:', error)
+            throw new Error(`响应数据解密失败: ${(error as Error).message}`)
+          }
+        }
 
+        const { code } = responseData
         // 检查是否是401错误（包括HTTP状态码401或业务码401）
         const isTokenExpired = res.statusCode === 401 || code === 401
 
@@ -143,6 +156,7 @@ export function http<T>(options: CustomRequestOptions) {
  * @param url 后台地址
  * @param query 请求query参数
  * @param header 请求头，默认为json格式
+ * @param options 其他配置项
  * @returns
  */
 export function httpGet<T>(url: string, query?: Record<string, any>, header?: Record<string, any>, options?: Partial<CustomRequestOptions>) {
@@ -161,6 +175,7 @@ export function httpGet<T>(url: string, query?: Record<string, any>, header?: Re
  * @param data 请求body参数
  * @param query 请求query参数，post请求也支持query，很多微信接口都需要
  * @param header 请求头，默认为json格式
+ * @param options 其他配置项
  * @returns
  */
 export function httpPost<T>(url: string, data?: Record<string, any>, query?: Record<string, any>, header?: Record<string, any>, options?: Partial<CustomRequestOptions>) {
@@ -190,9 +205,10 @@ export function httpPut<T>(url: string, data?: Record<string, any>, query?: Reco
 /**
  * DELETE 请求（无请求体，仅 query）
  */
-export function httpDelete<T>(url: string, query?: Record<string, any>, header?: Record<string, any>, options?: Partial<CustomRequestOptions>) {
+export function httpDelete<T>(url: string, data?: Record<string, any>, query?: Record<string, any>, header?: Record<string, any>, options?: Partial<CustomRequestOptions>) {
   return http<T>({
     url,
+    data,
     query,
     method: 'DELETE',
     header,

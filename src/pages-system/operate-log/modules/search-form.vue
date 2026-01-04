@@ -1,26 +1,14 @@
 <template>
   <!-- 搜索框入口 -->
-  <wd-search
-    :placeholder="placeholder"
-    :hide-cancel="true"
-    disabled
-    @click="visible = true"
-  />
+  <view @click="visible = true">
+    <wd-search :placeholder="placeholder" hide-cancel disabled />
+  </view>
 
   <!-- 搜索弹窗 -->
-  <wd-popup
-    v-model="visible"
-    position="top"
-    custom-style="border-radius: 0 0 24rpx 24rpx;"
-    safe-area-inset-top
-    @close="visible = false"
-  >
-    <view class="p-32rpx">
-      <view class="mb-24rpx text-32rpx text-[#333] font-semibold">
-        搜索操作日志
-      </view>
-      <view class="mb-24rpx">
-        <view class="mb-12rpx text-28rpx text-[#666]">
+  <wd-popup v-model="visible" position="top" @close="visible = false">
+    <view class="yd-search-form-container" :style="{ paddingTop: `${getNavbarHeight()}px` }">
+      <view class="yd-search-form-item">
+        <view class="yd-search-form-label">
           操作人
         </view>
         <UserPicker
@@ -30,8 +18,8 @@
           placeholder="请选择操作人员"
         />
       </view>
-      <view class="mb-24rpx">
-        <view class="mb-12rpx text-28rpx text-[#666]">
+      <view class="yd-search-form-item">
+        <view class="yd-search-form-label">
           操作模块
         </view>
         <wd-input
@@ -40,8 +28,8 @@
           clearable
         />
       </view>
-      <view class="mb-24rpx">
-        <view class="mb-12rpx text-28rpx text-[#666]">
+      <view class="yd-search-form-item">
+        <view class="yd-search-form-label">
           操作名
         </view>
         <wd-input
@@ -50,8 +38,8 @@
           clearable
         />
       </view>
-      <view class="mb-24rpx">
-        <view class="mb-12rpx text-28rpx text-[#666]">
+      <view class="yd-search-form-item">
+        <view class="yd-search-form-label">
           操作内容
         </view>
         <wd-input
@@ -60,49 +48,35 @@
           clearable
         />
       </view>
-      <view class="mb-24rpx">
-        <view class="mb-12rpx text-28rpx text-[#666]">
+      <view class="yd-search-form-item">
+        <view class="yd-search-form-label">
           操作时间
         </view>
-        <view class="flex items-center gap-16rpx">
+        <view class="yd-search-form-date-range-container">
           <view class="flex-1" @click="visibleCreateTime[0] = true">
-            <view
-              class="h-72rpx flex items-center justify-center rounded-8rpx bg-[#f5f5f5] px-24rpx text-28rpx"
-            >
+            <view class="yd-search-form-date-range-picker">
               {{ formatDate(formData.createTime?.[0]) || '开始日期' }}
             </view>
           </view>
-          <text class="text-28rpx text-[#999]">至</text>
+          -
           <view class="flex-1" @click="visibleCreateTime[1] = true">
-            <view
-              class="h-72rpx flex items-center justify-center rounded-8rpx bg-[#f5f5f5] px-24rpx text-28rpx"
-            >
+            <view class="yd-search-form-date-range-picker">
               {{ formatDate(formData.createTime?.[1]) || '结束日期' }}
             </view>
           </view>
         </view>
-        <wd-datetime-picker-view
-          v-if="visibleCreateTime[0]"
-          v-model="tempCreateTime[0]"
-          type="date"
-          :columns-height="200"
-        />
-        <view v-if="visibleCreateTime[0]" class="mt-16rpx flex justify-end gap-16rpx">
-          <wd-button size="small" plain @click="handleCreateTime0Cancel">
+        <wd-datetime-picker-view v-if="visibleCreateTime[0]" v-model="tempCreateTime[0]" type="date" />
+        <view v-if="visibleCreateTime[0]" class="yd-search-form-date-range-actions">
+          <wd-button size="small" plain @click="visibleCreateTime[0] = false">
             取消
           </wd-button>
           <wd-button size="small" type="primary" @click="handleCreateTime0Confirm">
             确定
           </wd-button>
         </view>
-        <wd-datetime-picker-view
-          v-if="visibleCreateTime[1]"
-          v-model="tempCreateTime[1]"
-          type="date"
-          :columns-height="200"
-        />
-        <view v-if="visibleCreateTime[1]" class="mt-16rpx flex justify-end gap-16rpx">
-          <wd-button size="small" plain @click="handleCreateTime1Cancel">
+        <wd-datetime-picker-view v-if="visibleCreateTime[1]" v-model="tempCreateTime[1]" type="date" />
+        <view v-if="visibleCreateTime[1]" class="yd-search-form-date-range-actions">
+          <wd-button size="small" plain @click="visibleCreateTime[1] = false">
             取消
           </wd-button>
           <wd-button size="small" type="primary" @click="handleCreateTime1Confirm">
@@ -110,8 +84,8 @@
           </wd-button>
         </view>
       </view>
-      <view class="mb-32rpx">
-        <view class="mb-12rpx text-28rpx text-[#666]">
+      <view class="yd-search-form-item">
+        <view class="yd-search-form-label">
           业务编号
         </view>
         <wd-input
@@ -120,7 +94,7 @@
           clearable
         />
       </view>
-      <view class="w-full flex justify-center gap-24rpx">
+      <view class="yd-search-form-actions">
         <wd-button class="flex-1" plain @click="handleReset">
           重置
         </wd-button>
@@ -134,7 +108,8 @@
 
 <script lang="ts" setup>
 import { computed, reactive, ref } from 'vue'
-import UserPicker from '@/pages-system/user/form/components/user-picker.vue'
+import UserPicker from '@/components/system-select/user-picker.vue'
+import { getNavbarHeight } from '@/utils'
 import { formatDate, formatDateRange } from '@/utils/date'
 
 const emit = defineEmits<{
@@ -188,19 +163,9 @@ function handleCreateTime0Confirm() {
   visibleCreateTime.value[0] = false
 }
 
-/** 操作时间[0]取消 */
-function handleCreateTime0Cancel() {
-  visibleCreateTime.value[0] = false
-}
-
 /** 操作时间[1]确认 */
 function handleCreateTime1Confirm() {
   formData.createTime = [formData.createTime?.[0], tempCreateTime.value[1]]
-  visibleCreateTime.value[1] = false
-}
-
-/** 操作时间[1]取消 */
-function handleCreateTime1Cancel() {
   visibleCreateTime.value[1] = false
 }
 
@@ -224,6 +189,4 @@ function handleReset() {
   visible.value = false
   emit('reset')
 }
-
-
 </script>

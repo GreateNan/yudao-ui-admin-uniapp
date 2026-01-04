@@ -1,5 +1,5 @@
 <template>
-  <view class="page-container">
+  <view class="yd-page-container">
     <!-- 顶部导航栏 -->
     <wd-navbar
       title="部门详情"
@@ -10,12 +10,12 @@
     <!-- 详情内容 -->
     <view>
       <wd-cell-group border>
-        <wd-cell title="部门名称" :value="formData?.name || '-'" />
+        <wd-cell title="部门名称" :value="formData?.name" />
         <wd-cell title="上级部门" :value="getParentName() || '-'" />
         <wd-cell title="负责人" :value="getLeaderName() || '-'" />
         <wd-cell title="联系电话" :value="formData?.phone || '-'" />
         <wd-cell title="邮箱" :value="formData?.email || '-'" />
-        <wd-cell title="显示顺序" :value="String(formData?.sort ?? '-')" />
+        <wd-cell title="显示顺序" :value="formData?.sort" />
         <wd-cell title="状态">
           <dict-tag :type="DICT_TYPE.COMMON_STATUS" :value="formData?.status" />
         </wd-cell>
@@ -24,8 +24,8 @@
     </view>
 
     <!-- 底部操作按钮 -->
-    <view class="fixed bottom-0 left-0 right-0 bg-white p-24rpx">
-      <view class="w-full flex gap-24rpx">
+    <view class="yd-detail-footer">
+      <view class="yd-detail-footer-actions">
         <wd-button class="flex-1" type="warning" @click="handleEdit">
           编辑
         </wd-button>

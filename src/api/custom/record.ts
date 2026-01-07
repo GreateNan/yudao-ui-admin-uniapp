@@ -43,7 +43,8 @@ export function deleRecord(id: number) {
 /** 创建记录 */
 export function createRecord(data) {
   return http.post<PageResult<Record>>('/mngt/form-record/create', data)
-}/** 更新记录 */
+}
+/** 更新记录 */
 export function updateRecord(data) {
   return http.put<Record>('/mngt/form-record/update', data)
 }
@@ -126,3 +127,13 @@ export function logoget(id: number) {
   return http.get<Record>(`/mngt/project-log/get?id=${id}`)
 
 }
+
+/** 创建日志 */
+export function createLog(data) {
+  return http.post<PageResult<Record>>('/mngt/project-log/create', data)
+}
+/** 更新日志 */
+export function updateLog(data) {
+  return http.put<Record>('/mngt/project-log/update', data)
+}
+

@@ -38,21 +38,15 @@
         closable
         @close="show = false"
       >
-
-      
-
-      <wd-cell-group border>
-        <!-- <wd-cell title="编号" :value="String(detail?.id ?? '-')" /> -->
-       <wd-cell title="日志项目" :value="detail?.project || '-'" />
-        <wd-cell title="日志时间">
-             {{      formatDateTime(detail.createTime ) || "-"}}
-        </wd-cell>
-        <wd-cell title="日志内容" :value="detail?.log || '-'" />
-        <wd-cell title="备注" :value="detail?.remark || '-'" />
-      
-      
-        
-      </wd-cell-group>
+        <wd-cell-group border>
+          <!-- <wd-cell title="编号" :value="String(detail?.id ?? '-')" /> -->
+          <wd-cell title="日志项目" :value="detail?.project || '-'" />
+          <wd-cell title="日志时间">
+            {{ formatDateTime(detail.createTime) || "-" }}
+          </wd-cell>
+          <wd-cell title="日志内容" :value="detail?.log || '-'" />
+          <wd-cell title="备注" :value="detail?.remark || '-'" />
+        </wd-cell-group>
       </wd-popup>
       <!-- 加载更多 -->
       <view
@@ -65,6 +59,25 @@
         v-if="list.length > 0"
         :state="loadMoreState"
         @reload="loadMore"
+      />
+
+      <wd-popup
+        v-model="showadd"
+        position="bottom"
+        custom-style="height: 800px;padding-top:50px"
+        closable
+        @close="showadd = false"
+      >
+        <logFrom  @success="showadd = false,reList()" :majorId="majorId" :projectId="projectId"/>
+      </wd-popup>
+
+      <!-- 新增按钮 -->
+      <wd-fab
+        v-if="buttons.includes('hd-log-add')"
+        position="right-bottom"
+        type="primary"
+        :expandable="false"
+        @click="handleAdd"
       />
     </view>
   </view>
@@ -79,7 +92,7 @@ import { logopage, logoget } from "@/api/custom/record";
 import { navigateBackPlus } from "@/utils";
 import { DICT_TYPE } from "@/utils/constants";
 import { formatDateTime } from "@/utils/date";
-
+import logFrom from "./logFrom.vue";
 import { useAccess } from "@/hooks/useAccess";
 const { hasAccessByCodes } = useAccess();
 
@@ -91,18 +104,24 @@ const props = withDefaults(
     majorId?: number;
     projectId?: number;
     type?: number;
+    buttons?: [];
   }>(),
   {
     majorId: undefined,
     projectId: undefined,
     type: undefined,
+    buttons: undefined,
   }
 );
+const showadd = ref(false);
+function handleAdd() {
+  showadd.value = true;
+}
 const fileId = ref();
 function showVersion(item) {
   show.value = true;
   fileId.value = item.id;
-  getDetail()
+  getDetail();
 }
 const queryParams = ref({
   pageNo: 1,
@@ -131,16 +150,20 @@ function handleQuery(data?: Record<string, any>) {
   list.value = [];
   getList();
 }
-
+function reList(){
+   queryParams.value.pageNo=1
+  list.value = [];
+  getList();
+}
 /** 重置按钮操作 */
 function handleReset() {
   handleQuery();
 }
-const detail=ref()
+const detail = ref();
 async function getDetail() {
-    console.log(fileId.value)
+  console.log(fileId.value);
   const data = await logoget(fileId.value);
-  detail.value=data
+  detail.value = data;
 }
 /** 查询操作日志列表 */
 async function getList() {
@@ -182,4 +205,10 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+::v-deep.wd-cell__wrapper {
+  flex-direction: column;
+  .wd-wd-cell__value--right {
+    text-align: left;
+  }
+}
 </style>

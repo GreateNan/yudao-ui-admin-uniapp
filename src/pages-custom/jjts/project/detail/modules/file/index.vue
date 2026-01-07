@@ -8,7 +8,7 @@
       :key="props.majorId"
     />
 
-       <!-- 搜索组件 -->
+    <!-- 搜索组件 -->
     <SearchForm @search="handleQuery" @reset="handleReset" />
     <!-- 操作日志列表 -->
     <view class="p-24rpx">
@@ -51,7 +51,11 @@
           </view>
           <view class="left-0 right-0 bg-white p-24rpx">
             <view class="w-full flex gap-24rpx">
-              <wd-button class="flex-1" type="warning" @click="showVersion(item)">
+              <wd-button
+                class="flex-1"
+                type="warning"
+                @click="showVersion(item)"
+              >
                 历史版本
               </wd-button>
             </view>
@@ -62,12 +66,10 @@
         v-model="show"
         position="left"
         custom-style="width: 300px;padding-top:50px"
-        closable 
+        closable
         @close="show = false"
       >
-      
-        <versionList :fileId="fileId" v-if="fileId" :key="fileId"/>
-      
+        <versionList :fileId="fileId" v-if="fileId" :key="fileId" />
       </wd-popup>
       <!-- 加载更多 -->
       <view
@@ -90,7 +92,7 @@ import type { Record } from "@/api/custom/record";
 import type { LoadMoreState } from "@/http/types";
 import { onReachBottom, onShow } from "@dcloudio/uni-app";
 import { onMounted, ref, watch } from "vue";
-import { getprojectfilepage,getfileVersion } from "@/api/custom/record";
+import { getprojectfilepage, getfileVersion } from "@/api/custom/record";
 import { navigateBackPlus } from "@/utils";
 import { DICT_TYPE } from "@/utils/constants";
 import { formatDateTime } from "@/utils/date";
@@ -115,10 +117,10 @@ const props = withDefaults(
     type: undefined,
   }
 );
-const fileId =ref()
-function showVersion(item){
-  show.value = true
-  fileId.value=item.id
+const fileId = ref();
+function showVersion(item) {
+  show.value = true;
+  fileId.value = item.id;
 }
 const queryParams = ref({
   pageNo: 1,
@@ -133,17 +135,18 @@ watch(
   () => forderId.value,
   (val) => {
     console.log(val, "forderId");
+    queryParams.value.pageNo =1
+    list.value = [];
     getList();
   }
 );
-
 
 /** 搜索按钮操作 */
 function handleQuery(data?: Record<string, any>) {
   queryParams.value = {
     ...data,
     pageNo: 1,
-   
+
     pageSize: queryParams.value.pageSize,
   };
   list.value = [];
@@ -189,7 +192,7 @@ onReachBottom(() => {
 
 /** 初始化 */
 onMounted(() => {
-  forderId.value=undefined
+  forderId.value = undefined;
   getList();
 });
 </script>

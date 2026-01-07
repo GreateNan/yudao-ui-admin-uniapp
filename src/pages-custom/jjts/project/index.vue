@@ -46,10 +46,10 @@
                 item.name
               }}</view>
               <view style="color: rgba(0, 0, 0, 0.25); font-size: 12px"
-                >创建人{{ item.creatorname }}</view
+                >创建人：{{ item.creatorname }}</view
               >
                 <view style="color: rgba(0, 0, 0, 0.25); font-size: 12px"
-                >人数{{ item.projectmenber  }}</view
+                >人数：{{ item.projectmenber  }}</view
               >
             </view>
           </view>

@@ -13,40 +13,39 @@
     <!-- 详情内容 -->
     <view>
       <wd-collapse v-model="wdvalue">
-        <wd-collapse-item title="项目详情" name="item1"
-          >
-             <wd-cell-group border>
-          <!-- <wd-cell title="编号" :value="String(formData?.id ?? '-')" /> -->
-          <!-- <wd-cell v-if="formData?.traceId" title="链路追踪" :value="formData.traceId" />
+        <wd-collapse-item title="项目详情" name="item1">
+          <wd-cell-group border>
+            <!-- <wd-cell title="编号" :value="String(formData?.id ?? '-')" /> -->
+            <!-- <wd-cell v-if="formData?.traceId" title="链路追踪" :value="formData.traceId" />
         <wd-cell title="操作人编号" :value="String(formData?.userId ?? '-')" /> -->
-          <wd-cell title="项目优先级">
-            <dict-tag
-              :type="DICT_TYPE.MNGT_PROJECTPRIORITY"
-              :value="formData?.projectPriority"
+            <wd-cell title="项目优先级">
+              <dict-tag
+                :type="DICT_TYPE.MNGT_PROJECTPRIORITY"
+                :value="formData?.projectPriority"
+              />
+            </wd-cell>
+            <wd-cell title="项目状态">
+              <dict-tag
+                :type="DICT_TYPE.MNGT_PROJECTSTATUS"
+                :value="formData?.projectType"
+              />
+            </wd-cell>
+            <wd-cell
+              title="开始日期"
+              :value="formatDateTime(formData.startTime)"
             />
-          </wd-cell>
-          <wd-cell title="项目状态">
-            <dict-tag
-              :type="DICT_TYPE.MNGT_PROJECTSTATUS"
-              :value="formData?.projectType"
+            <wd-cell
+              title="结束日期"
+              :value="formatDateTime(formData.endTime)"
             />
-          </wd-cell>
-          <wd-cell
-            title="开始日期"
-            :value="formatDateTime(formData.startTime)"
-          />
-          <wd-cell title="结束日期" :value="formatDateTime(formData.endTime)" />
-          <wd-cell title="项目名" :value="formData?.name || '-'" />
+            <wd-cell title="项目名" :value="formData?.name || '-'" />
 
-          <wd-cell title="服务对象" :value="formData?.bojectname || '-'" />
+            <wd-cell title="服务对象" :value="formData?.bojectname || '-'" />
 
-          <wd-cell title="项目类型" :value="formData?.majorname || '-'" />
-          <wd-cell title="项目描述" :value="formData?.projectDesc || '-'" />
-        </wd-cell-group>
-          
-          </wd-collapse-item
-        >
-     
+            <wd-cell title="项目类型" :value="formData?.majorname || '-'" />
+            <wd-cell title="项目描述" :value="formData?.projectDesc || '-'" />
+          </wd-cell-group>
+        </wd-collapse-item>
       </wd-collapse>
       <view
         class="tabsList"
@@ -81,22 +80,20 @@
         @confirm="confirm"
       />
 
-      <wd-tabs v-model="currenttab">
-        <block :key="0">
-          <wd-tab title="人员管理"> </wd-tab>
+      <wd-tabs v-model="currenttab" @change="changetab">
+        <block>
+          <wd-tab title="人员管理" name="0"> </wd-tab>
         </block>
         <block
-          :key="1"
           v-if="
             buttons.includes('hd-base-list') ||
             roles.includes(3) ||
             roles.includes(2)
           "
         >
-          <wd-tab title="基础文件"> </wd-tab>
+          <wd-tab title="基础文件" name="1"> </wd-tab>
         </block>
         <block
-          :key="2"
           v-if="
             current == 0 &&
             (buttons.includes('hd-zz-list') ||
@@ -104,21 +101,20 @@
               roles.includes(2))
           "
         >
-          <wd-tab title="安全管理"> </wd-tab>
+          <wd-tab title="安全管理" name="2"> </wd-tab>
         </block>
 
         <block
-          :key="2"
           v-if="
             buttons.includes('hd-aq-list') ||
             roles.includes(3) ||
             roles.includes(2)
           "
         >
-          <wd-tab title="资质管理"> </wd-tab>
+          <wd-tab title="资质管理" name="3"> </wd-tab>
         </block>
-        <block :key="3" v-if="current == 0">
-          <wd-tab title="抄送人员"> </wd-tab>
+        <block v-if="current == 0">
+          <wd-tab title="抄送人员" name="4"> </wd-tab>
         </block>
         <block
           :key="5"
@@ -129,11 +125,10 @@
               roles.includes(2))
           "
         >
-          <wd-tab title="调试日志"> </wd-tab>
+          <wd-tab title="调试日志" name="5"> </wd-tab>
         </block>
 
         <block
-          :key="4"
           v-if="
             current == 0 &&
             (buttons.includes('hd-kq-list') ||
@@ -141,11 +136,10 @@
               roles.includes(2))
           "
         >
-          <wd-tab title="考勤管理"> </wd-tab>
+          <wd-tab title="考勤管理" name="6"> </wd-tab>
         </block>
 
         <block
-          :key="6"
           v-if="
             current == 1 &&
             (buttons.includes('hd-jl-list') ||
@@ -153,7 +147,7 @@
               roles.includes(2))
           "
         >
-          <wd-tab title="操作卡"> </wd-tab>
+          <wd-tab title="操作卡" name="7"> </wd-tab>
         </block>
       </wd-tabs>
 
@@ -161,15 +155,15 @@
         :key="majorId"
         :majorId="majorId"
         :projectId="formData.id"
-        v-if="currenttab == 0"
+        v-if="currenttabKey == 0"
       />
       <template v-if="current == 0">
         <file
           :key="currenttab"
           :majorId="majorId"
           :projectId="formData.id"
-          :type="{ 1: 0, 2: 1, 3: 2, 5: 3 }[currenttab]"
-          v-if="[1, 2, 3, 5].includes(currenttab)"
+          :type="{ '1': 0, '2': 1, '3': 2, '6': 3 }[currenttabKey]"
+          v-if="['1', '2', '3', '6'].includes(currenttabKey)"
         />
       </template>
 
@@ -177,13 +171,14 @@
         :key="majorId"
         :majorId="majorId"
         :projectId="formData.id"
-        v-if="currenttab == 4 && current == 0"
+        v-if="currenttabKey == 4 && current == 0"
       />
       <log
         :key="majorId"
         :majorId="majorId"
         :projectId="formData.id"
-        v-if="currenttab == 3 && current == 1"
+         :buttons="buttons"
+        v-if="currenttabKey == 5 && current == 1"
       />
       <record
         :key="majorId"
@@ -191,15 +186,15 @@
         :projectId="formData.id"
         :objectId="formData.objectId"
         :buttons="buttons"
-        v-if="currenttab == 4 && current == 1"
+        v-if="currenttabKey == 7 && current == 1"
       ></record>
       <template v-if="current == 1">
         <file
           :key="currenttab"
           :majorId="majorId"
           :projectId="formData.id"
-          :type="{ 1: 0, 2: 1, 3: 2, 5: 3 }[currenttab]"
-          v-if="[1, 2].includes(currenttab)"
+          :type="{ '1': 0, '3': 2 }[currenttabKey]"
+          v-if="['1', '3'].includes(currenttabKey)"
         />
       </template>
     </view>
@@ -232,7 +227,7 @@ definePage({
     navigationStyle: "custom",
   },
 });
-const wdvalue = ref<string[]>([])
+const wdvalue = ref<string[]>([]);
 const toast = useToast();
 
 const current = ref(0); //0 项目 1各专业
@@ -255,6 +250,11 @@ function handleEdit() {
   uni.navigateTo({
     url: `/pages-custom/scfw/form/index?id=${props.id}`,
   });
+}
+const currenttabKey = ref(0); //
+function changetab(e) {
+  console.log(e);
+  currenttabKey.value = e.name;
 }
 // 执行记录
 function execute() {

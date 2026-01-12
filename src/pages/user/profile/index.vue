@@ -55,7 +55,7 @@ import Form from './components/form.vue'
 
 definePage({
   style: {
-    navigationBarTitleText: '',
+    
     navigationStyle: 'custom',
   },
 })

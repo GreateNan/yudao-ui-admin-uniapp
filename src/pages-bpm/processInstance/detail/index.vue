@@ -122,7 +122,7 @@ import { formatDateTime, formatPast } from '@/utils/date'
 
 definePage({
   style: {
-    navigationBarTitleText: '',
+    
     navigationStyle: 'custom',
   },
 })

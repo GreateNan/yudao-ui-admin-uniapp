@@ -55,7 +55,7 @@ const props = defineProps<{
 
 definePage({
   style: {
-    navigationBarTitleText: '',
+    
     navigationStyle: 'custom',
   },
 })

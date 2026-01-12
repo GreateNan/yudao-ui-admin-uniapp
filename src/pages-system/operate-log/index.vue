@@ -74,7 +74,7 @@ import SearchForm from './modules/search-form.vue'
 
 definePage({
   style: {
-    navigationBarTitleText: '',
+    
     navigationStyle: 'custom',
   },
 })

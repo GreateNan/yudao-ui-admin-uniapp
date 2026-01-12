@@ -59,7 +59,7 @@ import { saveImageToAlbum } from '@/utils/download'
 
 definePage({
   style: {
-    navigationBarTitleText: '',
+    
     navigationStyle: 'custom',
   },
 })

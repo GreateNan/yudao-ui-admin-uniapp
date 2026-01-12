@@ -87,7 +87,7 @@ import Breadcrumb from './components/breadcrumb.vue'
 
 definePage({
   style: {
-    navigationBarTitleText: '',
+    
     navigationStyle: 'custom',
   },
 })

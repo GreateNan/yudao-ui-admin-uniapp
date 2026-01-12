@@ -59,7 +59,7 @@ import { faqList } from './data'
 
 definePage({
   style: {
-    navigationBarTitleText: '',
+    
     navigationStyle: 'custom',
   },
 })

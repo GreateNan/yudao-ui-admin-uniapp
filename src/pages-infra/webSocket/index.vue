@@ -174,7 +174,7 @@ import { formatDateTime } from '@/utils/date'
 
 definePage({
   style: {
-    navigationBarTitleText: '',
+    
     navigationStyle: 'custom',
   },
 })

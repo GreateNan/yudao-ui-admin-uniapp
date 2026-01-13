@@ -119,7 +119,7 @@ const BpmProcessInstanceStatus = {
 
 definePage({
   style: {
-    navigationBarTitleText: '',
+    
     navigationStyle: 'custom',
   },
 })

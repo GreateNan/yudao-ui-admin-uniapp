@@ -33,7 +33,7 @@ import TodoList from './components/todo-list.vue'
 
 definePage({
   style: {
-    navigationBarTitleText: '',
+    
     navigationStyle: 'custom',
   },
 })

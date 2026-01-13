@@ -76,7 +76,7 @@ import { DICT_TYPE } from '@/utils/constants'
 
 definePage({
   style: {
-    navigationBarTitleText: '',
+    
     navigationStyle: 'custom',
   },
 })

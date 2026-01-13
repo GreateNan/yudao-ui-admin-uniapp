@@ -106,7 +106,7 @@ import '@/pages/bpm/styles/index.scss'
 
 definePage({
   style: {
-    navigationBarTitleText: '',
+    
     navigationStyle: 'custom',
   },
 })

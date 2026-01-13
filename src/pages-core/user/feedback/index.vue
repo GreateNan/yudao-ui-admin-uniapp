@@ -61,7 +61,7 @@ import { getEnvBaseUrl, navigateBackPlus } from '@/utils/index'
 
 definePage({
   style: {
-    navigationBarTitleText: '',
+    
     navigationStyle: 'custom',
   },
 })

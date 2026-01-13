@@ -29,7 +29,7 @@ import TokenList from './components/token-list.vue'
 
 definePage({
   style: {
-    navigationBarTitleText: '',
+    
     navigationStyle: 'custom',
   },
 })

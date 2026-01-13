@@ -51,7 +51,7 @@ import IpQueryForm from './components/ip-query-form.vue'
 
 definePage({
   style: {
-    navigationBarTitleText: '',
+    
     navigationStyle: 'custom',
   },
 })

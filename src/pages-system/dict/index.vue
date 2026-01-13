@@ -28,7 +28,7 @@ import TypeList from './components/type-list.vue'
 
 definePage({
   style: {
-    navigationBarTitleText: '',
+    
     navigationStyle: 'custom',
   },
 })

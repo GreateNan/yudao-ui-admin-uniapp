@@ -28,7 +28,7 @@ import FileList from './components/file-list.vue'
 
 definePage({
   style: {
-    navigationBarTitleText: '',
+    
     navigationStyle: 'custom',
   },
 })

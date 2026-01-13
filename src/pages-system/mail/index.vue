@@ -31,7 +31,7 @@ import TemplateList from './components/template-list.vue'
 
 definePage({
   style: {
-    navigationBarTitleText: '',
+    
     navigationStyle: 'custom',
   },
 })

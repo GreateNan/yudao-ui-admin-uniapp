@@ -112,7 +112,7 @@ import { navigateBackPlus } from '@/utils'
 
 definePage({
   style: {
-    navigationBarTitleText: '',
+    
     navigationStyle: 'custom',
   },
 })

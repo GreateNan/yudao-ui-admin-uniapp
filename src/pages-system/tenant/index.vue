@@ -29,7 +29,7 @@ import TenantList from './components/tenant-list.vue'
 
 definePage({
   style: {
-    navigationBarTitleText: '',
+    
     navigationStyle: 'custom',
   },
 })

@@ -115,7 +115,7 @@ import { BpmModelFormType } from '@/utils/constants'
 
 definePage({
   style: {
-    navigationBarTitleText: '',
+    
     navigationStyle: 'custom',
   },
 })

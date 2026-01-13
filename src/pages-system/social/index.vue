@@ -29,7 +29,7 @@ import UserList from './components/user-list.vue'
 
 definePage({
   style: {
-    navigationBarTitleText: '',
+    
     navigationStyle: 'custom',
   },
 })

@@ -121,7 +121,7 @@ import FormDetail from './components/form-detail.vue'
 
 definePage({
   style: {
-    navigationBarTitleText: '',
+    
     navigationStyle: 'custom',
   },
 })

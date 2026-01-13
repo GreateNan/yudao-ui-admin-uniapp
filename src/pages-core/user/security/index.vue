@@ -49,7 +49,7 @@ import PasswordForm from './components/password-form.vue'
 
 definePage({
   style: {
-    navigationBarTitleText: '',
+    
     navigationStyle: 'custom',
   },
 })

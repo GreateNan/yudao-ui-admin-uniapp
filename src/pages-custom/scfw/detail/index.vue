@@ -71,7 +71,7 @@ const props = defineProps<{
 const { hasAccessByCodes } = useAccess()
 definePage({
   style: {
-    navigationBarTitleText: "",
+    
     navigationStyle: "custom",
   },
 });

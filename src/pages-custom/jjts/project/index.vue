@@ -92,7 +92,7 @@ import { useAccess } from "@/hooks/useAccess";
 const { hasAccessByCodes } = useAccess();
 definePage({
   style: {
-    navigationBarTitleText: "",
+    
     navigationStyle: "custom",
   },
 });

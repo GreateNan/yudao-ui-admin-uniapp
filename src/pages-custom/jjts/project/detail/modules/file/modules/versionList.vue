@@ -1,8 +1,6 @@
 <template>
   <view class="page-container" style="background: #fff">
-
-
-       <!-- 搜索组件 -->
+    <!-- 搜索组件 -->
     <!-- <SearchForm @search="handleQuery" @reset="handleReset" /> -->
     <!-- 操作日志列表 -->
     <view class="p-24rpx">
@@ -20,7 +18,7 @@
           <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
             <text class="mr-8rpx text-[#999]">关联设备：</text>
             <text class="line-clamp-1">
-            {{item.devicename}}
+              {{ item.devicename }}
             </text>
           </view>
 
@@ -31,10 +29,13 @@
             }}</text>
           </view>
 
-        
           <view class="left-0 right-0 bg-white p-24rpx">
             <view class="w-full flex gap-24rpx">
-              <wd-button class="flex-1" type="warning" @click="handleOffice(item)">
+              <wd-button
+                class="flex-1"
+                type="warning"
+                @click="handleOffice(item)"
+              >
                 预览
               </wd-button>
             </view>
@@ -78,25 +79,24 @@ const loadMoreState = ref<LoadMoreState>("loading"); // 加载更多状态
 const props = withDefaults(
   defineProps<{
     fileId?: number;
-   
   }>(),
   {
     fileId: undefined,
-   
   }
 );
 const queryParams = ref({
   pageNo: 1,
   pageSize: 10,
   fileId: props.fileId,
- 
 });
 /** 预览 */
 function handleOffice(item: Record) {
- window.open(`https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(
-    item.fileUrl
-  )}`)
- 
+  //  window.open(`https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(
+  //     item.fileUrl
+  //   )}`)
+  uni.navigateTo({
+    url: "/pages-custom/form/view?url=" + encodeURIComponent(item.fileUrl),
+  });
 }
 const forderId = ref(undefined);
 const show = ref(false);
@@ -112,7 +112,7 @@ function handleQuery(data?: Record<string, any>) {
   queryParams.value = {
     ...data,
     pageNo: 1,
-   
+
     pageSize: queryParams.value.pageSize,
   };
   list.value = [];

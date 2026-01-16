@@ -19,7 +19,6 @@
         v-for="item in list"
         :key="item.id"
         class="mb-24rpx overflow-hidden rounded-12rpx bg-white shadow-sm"
-       
       >
         <view class="p-24rpx">
           <view class="mb-16rpx flex items-center justify-between">
@@ -30,11 +29,7 @@
           <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
             <text class="mr-8rpx text-[#999]">业务类型：</text>
             <text class="">
-              <dict-tag
-                :type="DICT_TYPE.YWLX"
-                :value="item?.business_type"
-              
-              />
+              <dict-tag :type="DICT_TYPE.YWLX" :value="item?.business_type" />
             </text>
           </view>
 
@@ -49,21 +44,20 @@
             <text class="mr-8rpx text-[#999]">所属部门：</text>
             <text class="line-clamp-1">{{ item.organizationname }}</text>
           </view>
-         <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
+          <view class="mb-12rpx flex items-center text-28rpx text-[#666]">
             <text class="mr-8rpx text-[#999]">创建人：</text>
             <text class="line-clamp-1">{{ item.creatorname }}</text>
           </view>
           <view class="left-0 right-0 bg-white p-24rpx">
             <view class="w-full flex gap-24rpx">
-              <wd-button class="flex-1" type="warning"  @click="handleDetail(item)">
-                查看操作卡
-              </wd-button>
               <wd-button
                 class="flex-1"
-                type="info"
-              
-                @click="handleOffice(item)"
+                type="warning"
+                @click="handleDetail(item)"
               >
+                查看操作卡
+              </wd-button>
+              <wd-button class="flex-1" type="info" @click="handleOffice(item)">
                 查看源文件
               </wd-button>
             </view>
@@ -110,7 +104,6 @@ import { useAccess } from "@/hooks/useAccess";
 const { hasAccessByCodes } = useAccess();
 definePage({
   style: {
-    
     navigationStyle: "custom",
   },
 });
@@ -184,10 +177,17 @@ function handleDetail(item: Record) {
 }
 /** 预览 */
 function handleOffice(item: Record) {
- window.open(`https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(
-    item.source_file_url
-  )}`)
- 
+  if (!item.source_file_url) {
+    uni.showToast({
+      title: "暂无源文件",
+      icon: "none",
+    });
+    return;
+  }
+  uni.navigateTo({
+    url:
+      "/pages-custom/form/view?url=" + encodeURIComponent(item.source_file_url),
+  });
 }
 /** 触底加载更多 */
 onReachBottom(() => {

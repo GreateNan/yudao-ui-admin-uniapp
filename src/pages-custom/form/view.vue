@@ -64,12 +64,12 @@ function handleOffice() {
         let urlorg = res.data.data;
    
         let viewerUrl = "/static/pdfjs/web/viewer.html";
-        fileurl.value = viewerUrl + "?file=" + encodeURIComponent(urlorg);
+        fileurl.value = viewerUrl + "?file=" + encodeURIComponent(urlorg)+"&locale=zh-CN";
       },
     });
   } else if (typeFun(url) == "pdf") {
     let viewerUrl = "/static/pdfjs/web/viewer.html";
-    fileurl.value = viewerUrl + "?file=" + encodeURIComponent(url);
+    fileurl.value = viewerUrl + "?file=" + encodeURIComponent(url)+"&locale=zh-CN";
     console.log(fileurl.value)
   }else if(typeFun(url) == "image"){
     imageUrl.value=url

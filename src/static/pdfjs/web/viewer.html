@@ -431,3 +431,10 @@ See https://github.com/adobe-type-tools/cmap-resources
     <input type="file" id="fileInput" class="hidden">
   </body>
 </html>
+<script>
+  // 在 viewer.js 加载前设置
+  window.PDF_VIEWER_CONFIG = {
+    defaultTool: 'hand',  // 默认使用手形工具
+    enableHandToolOnLoad: true
+  };
+</script>

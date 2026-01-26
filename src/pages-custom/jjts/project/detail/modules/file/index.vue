@@ -132,15 +132,24 @@ const queryParams = ref({
 const forderId = ref(undefined);
 const show = ref(false);
 watch(
+  () => props.majorId,
+  (val) => {
+    console.log(val, "majorId");
+    queryParams.value.pageNo = 1;
+    list.value = [];
+    forderId.value = undefined;
+    getList();
+  }
+);
+watch(
   () => forderId.value,
   (val) => {
     console.log(val, "forderId");
-    queryParams.value.pageNo =1
+    queryParams.value.pageNo = 1;
     list.value = [];
     getList();
   }
 );
-
 /** 搜索按钮操作 */
 function handleQuery(data?: Record<string, any>) {
   queryParams.value = {
@@ -159,6 +168,7 @@ function handleReset() {
 }
 /** 查询操作日志列表 */
 async function getList() {
+  console.log("list")
   loadMoreState.value = "loading";
   try {
     const data = await getprojectfilepage({
@@ -191,10 +201,10 @@ onReachBottom(() => {
 });
 
 /** 初始化 */
-onMounted(() => {
-  forderId.value = undefined;
-  getList();
-});
+// onMounted(() => {
+//   forderId.value = undefined;
+//   getList();
+// });
 </script>
 
 <style lang="scss" scoped>

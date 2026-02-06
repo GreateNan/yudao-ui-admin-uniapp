@@ -204,6 +204,22 @@ const menuGroupsData: MenuGroup[] = [
 
     ],
   },
+
+    {
+    key: 'wjgl',
+    name: '文件管理',
+    menus: [
+      {
+        key: 'wjglIndex',
+        name: '规程规范管理',
+        icon: 'list',
+        url: '/pages-custom/wjgl/index',
+        iconColor: '#597ef7',
+        // permission: 'mngt:form-record:query',
+      },
+
+    ],
+  },
   {
     key: 'infra',
     name: '基础设施',

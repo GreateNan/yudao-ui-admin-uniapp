@@ -137,3 +137,12 @@ export function updateLog(data) {
   return http.put<Record>('/mngt/project-log/update', data)
 }
 
+// 文件管理
+export function getStanfilepage(params: PageParam) {
+  return http.get<PageResult<Record>>('/mngt/standard-file/page', params)
+}
+
+// 文件管理版本列表
+export function getStanfileVersion(params: PageParam) {
+  return http.get<PageResult<Record>>('/mngt/standard-file-version/page', params)
+}
